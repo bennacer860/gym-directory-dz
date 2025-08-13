@@ -2,6 +2,7 @@ import os
 import json
 import sqlite3
 import time
+import logging
 from datetime import datetime, timedelta
 import requests
 from dateutil.parser import isoparse
@@ -34,14 +35,33 @@ LANGUAGE = "fr"
 REGION_CODE = "DZ"
 REFRESH_DAYS = 30
 MAX_REVIEWS_PER_PLACE = 100
-DB_PATH = "places_cache.db"
-CSV_PATH = "gyms_dz.csv"
-JSONL_PATH = "gyms_dz.jsonl"
+DB_PATH = "data/places_cache.db"
+CSV_PATH = "data/gyms_dz.csv"
+JSONL_PATH = "data/gyms_dz.jsonl"
+LOG_PATH = "data/scraper.log"
+
+# --- LOGGING SETUP ---
+log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Console handler
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(log_formatter)
+logger.addHandler(stream_handler)
+
+# File handler
+os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+file_handler = logging.FileHandler(LOG_PATH)
+file_handler.setFormatter(log_formatter)
+logger.addHandler(file_handler)
+
 
 # --- SQLITE CACHE HELPERS ---
 
 def ensure_db():
     """Creates the SQLite database and table if they don't exist."""
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
@@ -111,7 +131,7 @@ def nearby_search(center, radius, page_token=None):
             return response.json()
         except requests.exceptions.HTTPError as e:
             if e.response.status_code in (429, 500, 503, 504):
-                print(f"    Retrying due to {e.response.status_code} error...")
+                logging.warning(f"    Retrying due to {e.response.status_code} error...")
                 time.sleep(2 ** attempt)
                 continue
             raise e
@@ -137,7 +157,7 @@ def get_details(place_id):
             return response.json()
         except requests.exceptions.HTTPError as e:
             if e.response.status_code in (429, 500, 503, 504):
-                print(f"    Retrying due to {e.response.status_code} error...")
+                logging.warning(f"    Retrying due to {e.response.status_code} error...")
                 time.sleep(2 ** attempt)
                 continue
             raise e
@@ -182,6 +202,7 @@ def normalize_reviews(p):
 def export_csv(rows):
     """Exports the data to a CSV file."""
     import csv
+    os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
     with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -192,6 +213,7 @@ def export_csv(rows):
 
 def export_jsonl(payloads):
     """Exports the data to a JSONL file."""
+    os.makedirs(os.path.dirname(JSONL_PATH), exist_ok=True)
     with open(JSONL_PATH, "w", encoding="utf-8") as f:
         for payload in payloads:
             f.write(json.dumps(payload, ensure_ascii=False) + "\n")
@@ -203,7 +225,7 @@ import argparse
 def main(test_mode=False):
     """Main function to run the data collection workflow."""
     if test_mode:
-        print("--- RUNNING IN TEST MODE ---")
+        logging.info("--- RUNNING IN TEST MODE ---")
         CITIES_TO_SEARCH = CITIES[:1]
         RADIUS_TO_SEARCH = 5000
         MAX_PAGES_TO_SEARCH = 2
@@ -213,7 +235,7 @@ def main(test_mode=False):
         MAX_PAGES_TO_SEARCH = MAX_PAGES
 
     if not API_KEY:
-        print("Error: GOOGLE_PLACES_API_KEY environment variable not set.")
+        logging.error("Error: GOOGLE_PLACES_API_KEY environment variable not set.")
         return
 
     ensure_db()
@@ -222,10 +244,10 @@ def main(test_mode=False):
     page_count = 0
 
     for city in CITIES_TO_SEARCH:
-        print(f"--- Searching in {city['name']} ---")
+        logging.info(f"--- Searching in {city['name']} ---")
         next_page_token = None
         for page_num in range(MAX_PAGES_TO_SEARCH):
-            print(f"  Page {page_num + 1}...")
+            logging.info(f"  Page {page_num + 1}...")
             results = nearby_search(city, RADIUS_TO_SEARCH, next_page_token)
             page_count += 1
 
@@ -238,7 +260,7 @@ def main(test_mode=False):
                 break
             time.sleep(2)
 
-    print(f"\nFound {len(all_place_ids)} unique places across {page_count} pages.\n")
+    logging.info(f"\nFound {len(all_place_ids)} unique places across {page_count} pages.\n")
 
     csv_rows = []
     jsonl_payloads = []
@@ -247,7 +269,7 @@ def main(test_mode=False):
 
     for i, place_id in enumerate(all_place_ids):
         if (i + 1) % 100 == 0:
-            print(f"  Processed {i + 1}/{len(all_place_ids)} places...")
+            logging.info(f"  Processed {i + 1}/{len(all_place_ids)} places...")
 
         cached_data, fetched_at = cache_get(place_id)
 
@@ -265,14 +287,14 @@ def main(test_mode=False):
             csv_rows.append(flatten_record(place_details))
             jsonl_payloads.append(normalize_reviews(place_details.copy()))
 
-    print(f"\n--- Exporting Data ---")
-    print(f"  Total details fetched: {details_count}")
-    print(f"  Cache hits: {cache_hits}")
+    logging.info(f"\n--- Exporting Data ---")
+    logging.info(f"  Total details fetched: {details_count}")
+    logging.info(f"  Cache hits: {cache_hits}")
 
     export_csv(csv_rows)
     export_jsonl(jsonl_payloads)
 
-    print(f"\nSuccessfully exported data to {CSV_PATH} and {JSONL_PATH}")
+    logging.info(f"\nSuccessfully exported data to {CSV_PATH} and {JSONL_PATH}")
 
 if __name__ == "__main__":
     import argparse
