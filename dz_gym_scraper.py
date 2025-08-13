@@ -226,9 +226,9 @@ def main(test_mode=False):
     """Main function to run the data collection workflow."""
     if test_mode:
         logging.info("--- RUNNING IN TEST MODE ---")
-        CITIES_TO_SEARCH = CITIES[:1]
+        CITIES_TO_SEARCH = CITIES[:3]
         RADIUS_TO_SEARCH = 5000
-        MAX_PAGES_TO_SEARCH = 2
+        MAX_PAGES_TO_SEARCH = 1
     else:
         CITIES_TO_SEARCH = CITIES
         RADIUS_TO_SEARCH = RADIUS_M

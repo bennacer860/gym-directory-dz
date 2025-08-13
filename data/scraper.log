@@ -1,0 +1,16 @@
+2025-08-13 08:30:52,510 - INFO - --- RUNNING IN TEST MODE ---
+2025-08-13 08:30:52,511 - INFO - --- Searching in Alger ---
+2025-08-13 08:30:52,511 - INFO -   Page 1...
+2025-08-13 08:30:52,840 - INFO - --- Searching in Oran ---
+2025-08-13 08:30:52,840 - INFO -   Page 1...
+2025-08-13 08:30:53,061 - INFO - --- Searching in Constantine ---
+2025-08-13 08:30:53,061 - INFO -   Page 1...
+2025-08-13 08:30:53,281 - INFO - 
+Found 60 unique places across 3 pages.
+
+2025-08-13 08:31:11,772 - INFO - 
+--- Exporting Data ---
+2025-08-13 08:31:11,772 - INFO -   Total details fetched: 60
+2025-08-13 08:31:11,772 - INFO -   Cache hits: 0
+2025-08-13 08:31:11,781 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
