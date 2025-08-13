@@ -4,7 +4,7 @@ import json
 import sqlite3
 import time
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 from dateutil.parser import isoparse
 from dotenv import load_dotenv
@@ -57,6 +57,7 @@ file_handler = logging.FileHandler(LOG_PATH)
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
+# --- ADDRESS/CITY HELPERS ---
 def get_city_from_address(address):
     if not address:
         return "Unknown"
@@ -100,7 +101,7 @@ def cache_put(place_id, payload):
         cursor = conn.cursor()
         cursor.execute(
             "INSERT OR REPLACE INTO place_cache (place_id, payload_json, fetched_at) VALUES (?, ?, ?)",
-            (place_id, json.dumps(payload), datetime.utcnow().isoformat())
+            (place_id, json.dumps(payload), datetime.now(timezone.utc).isoformat())
         )
         conn.commit()
 
@@ -108,7 +109,10 @@ def is_stale(fetched_at):
     """Checks if a cached item is stale."""
     if not fetched_at:
         return True
-    return (datetime.utcnow() - fetched_at) > timedelta(days=REFRESH_DAYS)
+    # Ensure timezone-aware comparison
+    if fetched_at.tzinfo is None:
+        fetched_at = fetched_at.replace(tzinfo=timezone.utc)
+    return (datetime.now(timezone.utc) - fetched_at) > timedelta(days=REFRESH_DAYS)
 
 # --- GOOGLE PLACES API WRAPPERS ---
 
@@ -186,6 +190,7 @@ def flatten_record(p):
         p.get("id"),
         p.get("displayName", {}).get("text"),
         p.get("formattedAddress"),
+        p.get("city"),
         p.get("location", {}).get("latitude"),
         p.get("location", {}).get("longitude"),
         p.get("internationalPhoneNumber"),
@@ -193,39 +198,67 @@ def flatten_record(p):
         p.get("rating"),
         p.get("userRatingCount"),
         hours,
-        p.get("photo_url"),
+        p.get("photo_reference"),
         p.get("map_url"),
     ]
 
 def normalize_place(p):
-    """Normalizes the place data for JSONL export."""
-    # Normalize reviews
-    reviews = []
-    if p.get("reviews"):
-        for review in p["reviews"][:MAX_REVIEWS_PER_PLACE]:
-            reviews.append({
-                "author_name": review.get("authorAttribution", {}).get("displayName"),
-                "rating": review.get("rating"),
-                "relative_time_description": review.get("relativePublishTimeDescription"),
-                "original_language": review.get("originalLanguageCode"),
-                "text": review.get("text", {}).get("text"),
-            })
-    p["reviews"] = reviews
+    """Normalizes the place data for JSONL export.
 
-    # Add photo URL
-    if p.get("photos") and len(p["photos"]) > 0:
-        photo_resource_name = p["photos"][0]["name"]
-        p["photo_url"] = f"https://places.googleapis.com/v1/{photo_resource_name}/media?maxHeightPx=400&key={API_KEY}"
-    else:
-        p["photo_url"] = None
+    Idempotent: safe to call on raw Google payloads or already-normalized records.
+    """
+    # City: keep existing if present; otherwise derive from address
+    p["city"] = p.get("city") or get_city_from_address(p.get("formattedAddress"))
 
-    # Add map URL
-    if p.get("location"):
-        lat = p["location"]["latitude"]
-        lng = p["location"]["longitude"]
-        p["map_url"] = f"https://www.google.com/maps/search/?api=1&query={lat},{lng}&query_place_id={p['id']}"
-    else:
-        p["map_url"] = None
+    # Reviews: handle both raw Google shape and already-normalized shape
+    normalized_reviews = []
+    for review in (p.get("reviews") or [])[:MAX_REVIEWS_PER_PLACE]:
+        if not isinstance(review, dict):
+            continue
+        # Raw Google Places review
+        if (
+            "authorAttribution" in review
+            or "relativePublishTimeDescription" in review
+            or isinstance(review.get("text"), dict)
+        ):
+            author_name = (review.get("authorAttribution") or {}).get("displayName")
+            rating = review.get("rating")
+            relative = review.get("relativePublishTimeDescription")
+            lang = review.get("originalLanguageCode")
+            text_field = review.get("text")
+            text = (text_field or {}).get("text") if isinstance(text_field, dict) else text_field
+        else:
+            # Already-normalized review
+            author_name = review.get("author_name")
+            rating = review.get("rating")
+            relative = review.get("relative_time_description")
+            lang = review.get("original_language")
+            text = review.get("text")
+        normalized_reviews.append({
+            "author_name": author_name,
+            "rating": rating,
+            "relative_time_description": relative,
+            "original_language": lang,
+            "text": text,
+        })
+    p["reviews"] = normalized_reviews
+
+    # Photo reference: preserve if already set; otherwise take from first photo
+    if not p.get("photo_reference"):
+        if p.get("photos") and len(p["photos"]) > 0:
+            p["photo_reference"] = p["photos"][0].get("name")
+        else:
+            p["photo_reference"] = None
+
+    # Map URL: preserve if already set; otherwise compute
+    if not p.get("map_url"):
+        if p.get("location"):
+            lat = p["location"].get("latitude")
+            lng = p["location"].get("longitude")
+            if lat is not None and lng is not None:
+                p["map_url"] = f"https://www.google.com/maps/search/?api=1&query={lat},{lng}&query_place_id={p['id']}"
+        else:
+            p["map_url"] = None
 
     return p
 
@@ -234,10 +267,11 @@ def export_csv(rows):
     import csv
     os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
     with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        # Quote all non-numeric fields so text columns (like city) are always quoted
+        writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
         writer.writerow([
-            "place_id", "name", "address", "lat", "lng", "phone", "website",
-            "rating", "reviews_count", "hours", "photo_url", "map_url"
+            "place_id", "name", "address", "city", "lat", "lng", "phone", "website",
+            "rating", "reviews_count", "hours", "photo_reference", "map_url"
         ])
         writer.writerows(rows)
 
@@ -272,6 +306,8 @@ def main(test_mode=False):
 
     all_place_ids = set()
     page_count = 0
+    # Map each place_id to the search city it was found under
+    place_city_map = {}
 
     for city in CITIES_TO_SEARCH:
         logging.info(f"--- Searching in {city['name']} ---")
@@ -283,7 +319,10 @@ def main(test_mode=False):
 
             if results and "places" in results:
                 for place in results["places"]:
-                    all_place_ids.add(place["id"])
+                    pid = place["id"]
+                    all_place_ids.add(pid)
+                    # Keep the first associated city for this place_id
+                    place_city_map.setdefault(pid, city["name"])
 
             next_page_token = results.get("nextPageToken")
             if not next_page_token:
@@ -298,34 +337,40 @@ def main(test_mode=False):
     details_count = 0
 
     for i, place_id in enumerate(all_place_ids):
+        source_city = place_city_map.get(place_id, "Unknown")
         cached_data, fetched_at = cache_get(place_id)
+
+        normalized_place = None
 
         if cached_data and not is_stale(fetched_at):
             place_details = cached_data
             cache_hits += 1
             log_name = place_details.get("displayName", {}).get("text", "N/A")
-            log_city = get_city_from_address(place_details.get("formattedAddress"))
-            logging.info(f"CACHE HIT: Using cached data for {place_id} ({log_name}, {log_city})")
+            logging.info(f"CACHE HIT: Using cached data for {place_id} ({log_name}, {source_city})")
+            # Normalize for export; do not trust cache format blindly
+            normalized_place = normalize_place(place_details.copy())
         else:
             if cached_data:
                 log_name = cached_data.get("displayName", {}).get("text", "N/A")
-                log_city = get_city_from_address(cached_data.get("formattedAddress"))
-                logging.info(f"CACHE STALE: Fetching new data for {place_id} ({log_name}, {log_city})")
+                logging.info(f"CACHE STALE: Fetching new data for {place_id} ({log_name}, {source_city})")
             else:
                 logging.info(f"CACHE MISS: Fetching new data for {place_id}")
             place_details = get_details(place_id)
             if place_details:
-                cache_put(place_id, place_details)
-                log_name = place_details.get("displayName", {}).get("text", "N/A")
-                log_city = get_city_from_address(place_details.get("formattedAddress"))
-                logging.info(f"SUCCESS: Fetched and cached data for {place_id} ({log_name}, {log_city})")
+                normalized_place = normalize_place(place_details.copy())
+                # Keep cache consistent with outputs
+                normalized_place["city"] = source_city
+                cache_put(place_id, normalized_place)
+                log_name = normalized_place.get("displayName", {}).get("text", "N/A")
+                logging.info(f"SUCCESS: Fetched and cached data for {place_id} ({log_name}, {source_city})")
             else:
                 logging.error(f"FAILURE: Could not fetch data for {place_id}")
-            time.sleep(0.1) # Small delay to be nice to the API
+            time.sleep(0.1)  # Small delay to be nice to the API
 
-        if place_details:
+        if normalized_place:
             details_count += 1
-            normalized_place = normalize_place(place_details.copy())
+            # Ensure city in exports matches the search context
+            normalized_place["city"] = source_city
             csv_rows.append(flatten_record(normalized_place))
             jsonl_payloads.append(normalized_place)
 
