@@ -56,6 +56,16 @@ file_handler = logging.FileHandler(LOG_PATH)
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
+def get_city_from_address(address):
+    if not address:
+        return "Unknown"
+    for city in CITIES:
+        if city['name'].lower() in address.lower():
+            return city['name']
+    parts = address.split(',')
+    if len(parts) > 1:
+        return parts[-2].strip()
+    return parts[0].strip()
 
 # --- SQLITE CACHE HELPERS ---
 
@@ -226,9 +236,9 @@ def main(test_mode=False):
     """Main function to run the data collection workflow."""
     if test_mode:
         logging.info("--- RUNNING IN TEST MODE ---")
-        CITIES_TO_SEARCH = CITIES[:3]
+        CITIES_TO_SEARCH = CITIES[:1]
         RADIUS_TO_SEARCH = 5000
-        MAX_PAGES_TO_SEARCH = 1
+        MAX_PAGES_TO_SEARCH = 2
     else:
         CITIES_TO_SEARCH = CITIES
         RADIUS_TO_SEARCH = RADIUS_M
@@ -268,18 +278,29 @@ def main(test_mode=False):
     details_count = 0
 
     for i, place_id in enumerate(all_place_ids):
-        if (i + 1) % 100 == 0:
-            logging.info(f"  Processed {i + 1}/{len(all_place_ids)} places...")
-
         cached_data, fetched_at = cache_get(place_id)
 
         if cached_data and not is_stale(fetched_at):
             place_details = cached_data
             cache_hits += 1
+            log_name = place_details.get("displayName", {}).get("text", "N/A")
+            log_city = get_city_from_address(place_details.get("formattedAddress"))
+            logging.info(f"CACHE HIT: Using cached data for {place_id} ({log_name}, {log_city})")
         else:
+            if cached_data:
+                log_name = cached_data.get("displayName", {}).get("text", "N/A")
+                log_city = get_city_from_address(cached_data.get("formattedAddress"))
+                logging.info(f"CACHE STALE: Fetching new data for {place_id} ({log_name}, {log_city})")
+            else:
+                logging.info(f"CACHE MISS: Fetching new data for {place_id}")
             place_details = get_details(place_id)
             if place_details:
                 cache_put(place_id, place_details)
+                log_name = place_details.get("displayName", {}).get("text", "N/A")
+                log_city = get_city_from_address(place_details.get("formattedAddress"))
+                logging.info(f"SUCCESS: Fetched and cached data for {place_id} ({log_name}, {log_city})")
+            else:
+                logging.error(f"FAILURE: Could not fetch data for {place_id}")
             time.sleep(0.1) # Small delay to be nice to the API
 
         if place_details:
