@@ -14,3 +14,171 @@ Found 60 unique places across 3 pages.
 2025-08-13 08:31:11,772 - INFO -   Cache hits: 0
 2025-08-13 08:31:11,781 - INFO - 
 Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
+2025-08-13 10:27:42,882 - INFO - --- RUNNING IN TEST MODE ---
+2025-08-13 10:27:42,883 - INFO - --- Searching in Alger ---
+2025-08-13 10:27:42,883 - INFO -   Page 1...
+2025-08-13 10:27:43,104 - INFO - 
+Found 20 unique places across 1 pages.
+
+2025-08-13 10:27:43,107 - INFO - CACHE HIT: Using cached data for ChIJIc-BHgCzjxIRDX5CSLe6GJw (Golf Elmouradia elmadania, 69 Rue Ali Haddad)
+2025-08-13 10:27:43,108 - INFO - CACHE HIT: Using cached data for ChIJX35QtJKzjxIRBDhCifrUV8o (Five Gym Club, Alger)
+2025-08-13 10:27:43,109 - INFO - CACHE HIT: Using cached data for ChIJ9dJX_qyzjxIRWtFRFrBWFik (Energym Alger, Alger)
+2025-08-13 10:27:43,110 - INFO - CACHE HIT: Using cached data for ChIJxQL7axKzjxIRy5se8my0v_4 (Évolution fitness El biar, 28 Rue Hamidou Souiki)
+2025-08-13 10:27:43,111 - INFO - CACHE HIT: Using cached data for ChIJO_butf6tjxIREdyvCAg4ukE (Fitness house sidi yahia, 2 Chem. Sidi Yahia)
+2025-08-13 10:27:43,111 - INFO - CACHE HIT: Using cached data for ChIJU17l4kSxjxIRiCo9JF3jw70 (Flex gym, Ben Aknoun 16000)
+2025-08-13 10:27:43,112 - INFO - CACHE HIT: Using cached data for ChIJWR9ty3itjxIRyuF1DM0uVUg (Mina Sport, 28 Rue Musette)
+2025-08-13 10:27:43,113 - INFO - CACHE HIT: Using cached data for ChIJc7NIH2CtjxIRHhGbNbLHj-Y (Strongbody hydra, P2QV+FHJ)
+2025-08-13 10:27:43,113 - INFO - CACHE HIT: Using cached data for ChIJBd2PZlGtjxIRt3ZA8W6PlyM (Gym time, P3J9+MMR)
+2025-08-13 10:27:43,115 - INFO - CACHE HIT: Using cached data for ChIJG8nuKxCyjxIR7SIJWNnQl98 (ALHAMBRA, RESIDENCE CHABANI - VAL D'HYDRA RESIDENCE CHABANI)
+2025-08-13 10:27:43,115 - INFO - CACHE HIT: Using cached data for ChIJqapeGt6tjxIRExO5t1AJQDY (Oxygène Fitness Club, Hydra)
+2025-08-13 10:27:43,116 - INFO - CACHE HIT: Using cached data for ChIJSa8iegCzjxIRL2QgiAWC27Y (Khrouba, Q323+3J2)
+2025-08-13 10:27:43,116 - INFO - CACHE HIT: Using cached data for ChIJK799SdazjxIRYSsw2ECSJUg (SPA Maison Al Fatiha (Hammam & Massage | Que pour Femmes), P2WH+F9G)
+2025-08-13 10:27:43,117 - INFO - CACHE HIT: Using cached data for ChIJZ1QfNh-tjxIRVioTzFV25oA (Salle omnisports la concorde, Chem. de la CONCORDE)
+2025-08-13 10:27:43,117 - INFO - CACHE HIT: Using cached data for ChIJQ1lotKOzjxIRgAzRwuRj_Ic (Mashouda Team, Rue du Philosophe Aristote Ex rue de la Cordiere BT 04 étage 01 Local n 08 1604)
+2025-08-13 10:27:43,118 - INFO - CACHE HIT: Using cached data for ChIJ-d3Rh3CzjxIRUD7BqwVsoBY (House of Pain Dz, Bd Hales Said)
+2025-08-13 10:27:43,119 - INFO - CACHE HIT: Using cached data for ChIJActANKCyjxIRKI-855fKOiU (Body Fitness Center, Rue Rabah Takdjourt)
+2025-08-13 10:27:43,119 - INFO - CACHE HIT: Using cached data for ChIJhTVgEdatjxIRrOjU45jQ528 (Body Glad Fitness El Madania, 62 Bd Abderrahmane LAALA)
+2025-08-13 10:27:43,120 - INFO - CACHE HIT: Using cached data for ChIJb7Bv0LazjxIRJ6ecqfEJvqU (Home Fit, 19 Rue de Cirta)
+2025-08-13 10:27:43,121 - INFO - CACHE HIT: Using cached data for ChIJ09wr5KqtjxIR3dZSoYafSn8 (Source fitness & gym, 20 Rue Fabri MARCELLO)
+2025-08-13 10:27:43,121 - INFO - 
+--- Exporting Data ---
+2025-08-13 10:27:43,121 - INFO -   Total details fetched: 20
+2025-08-13 10:27:43,121 - INFO -   Cache hits: 20
+2025-08-13 10:27:43,126 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
+2025-08-13 10:28:33,707 - INFO - --- RUNNING IN TEST MODE ---
+2025-08-13 10:28:33,708 - INFO - --- Searching in Alger ---
+2025-08-13 10:28:33,708 - INFO -   Page 1...
+2025-08-13 10:28:33,879 - INFO - --- Searching in Oran ---
+2025-08-13 10:28:33,879 - INFO -   Page 1...
+2025-08-13 10:28:34,069 - INFO - --- Searching in Constantine ---
+2025-08-13 10:28:34,070 - INFO -   Page 1...
+2025-08-13 10:28:34,284 - INFO - 
+Found 60 unique places across 3 pages.
+
+2025-08-13 10:28:34,286 - INFO - CACHE MISS: Fetching new data for ChIJU17l4kSxjxIRiCo9JF3jw70
+2025-08-13 10:28:34,508 - INFO - SUCCESS: Fetched and cached data for ChIJU17l4kSxjxIRiCo9JF3jw70 (Flex gym, Ben Aknoun 16000)
+2025-08-13 10:28:34,611 - INFO - CACHE MISS: Fetching new data for ChIJO_butf6tjxIREdyvCAg4ukE
+2025-08-13 10:28:34,841 - INFO - SUCCESS: Fetched and cached data for ChIJO_butf6tjxIREdyvCAg4ukE (Fitness house sidi yahia, 2 Chem. Sidi Yahia)
+2025-08-13 10:28:34,943 - INFO - CACHE MISS: Fetching new data for ChIJN4rsvCKJfg0RvlojTYmgGZA
+2025-08-13 10:28:35,211 - INFO - SUCCESS: Fetched and cached data for ChIJN4rsvCKJfg0RvlojTYmgGZA (Fitness factory, Oran)
+2025-08-13 10:28:35,314 - INFO - CACHE MISS: Fetching new data for ChIJWR9ty3itjxIRyuF1DM0uVUg
+2025-08-13 10:28:35,548 - INFO - SUCCESS: Fetched and cached data for ChIJWR9ty3itjxIRyuF1DM0uVUg (Mina Sport, 28 Rue Musette)
+2025-08-13 10:28:35,653 - INFO - CACHE MISS: Fetching new data for ChIJBd2PZlGtjxIRt3ZA8W6PlyM
+2025-08-13 10:28:35,867 - INFO - SUCCESS: Fetched and cached data for ChIJBd2PZlGtjxIRt3ZA8W6PlyM (Gym time, P3J9+MMR)
+2025-08-13 10:28:35,972 - INFO - CACHE MISS: Fetching new data for ChIJgfIgdQB38RIR1OxWhkFk_MY
+2025-08-13 10:28:36,201 - INFO - SUCCESS: Fetched and cached data for ChIJgfIgdQB38RIR1OxWhkFk_MY (Oxygen gym constantine, Constantine)
+2025-08-13 10:28:36,305 - INFO - CACHE MISS: Fetching new data for ChIJ_Xga3ZeJfg0R0edq9StfCh0
+2025-08-13 10:28:36,493 - INFO - SUCCESS: Fetched and cached data for ChIJ_Xga3ZeJfg0R0edq9StfCh0 (S18 TRAINING CLUB, 14 rue mohamed Khemisti)
+2025-08-13 10:28:36,599 - INFO - CACHE MISS: Fetching new data for ChIJE1wygNGJfg0Ruiny-1ObfNo
+2025-08-13 10:28:36,810 - INFO - SUCCESS: Fetched and cached data for ChIJE1wygNGJfg0Ruiny-1ObfNo (1 6 8 Fitness oran, Oran)
+2025-08-13 10:28:36,914 - INFO - CACHE MISS: Fetching new data for ChIJmxRpZQeJfg0RIJnWwQny728
+2025-08-13 10:28:37,147 - INFO - SUCCESS: Fetched and cached data for ChIJmxRpZQeJfg0RIJnWwQny728 (Oxygen Gym Oran, Oran)
+2025-08-13 10:28:37,251 - INFO - CACHE MISS: Fetching new data for ChIJxQL7axKzjxIRy5se8my0v_4
+2025-08-13 10:28:37,483 - INFO - SUCCESS: Fetched and cached data for ChIJxQL7axKzjxIRy5se8my0v_4 (Évolution fitness El biar, 28 Rue Hamidou Souiki)
+2025-08-13 10:28:37,588 - INFO - CACHE MISS: Fetching new data for ChIJ1We-eYGJfg0RmuC2qzVUjSw
+2025-08-13 10:28:37,810 - INFO - SUCCESS: Fetched and cached data for ChIJ1We-eYGJfg0RmuC2qzVUjSw (Extreme Gym, Oran)
+2025-08-13 10:28:37,914 - INFO - CACHE MISS: Fetching new data for ChIJX35QtJKzjxIRBDhCifrUV8o
+2025-08-13 10:28:38,123 - INFO - SUCCESS: Fetched and cached data for ChIJX35QtJKzjxIRBDhCifrUV8o (Five Gym Club, Alger)
+2025-08-13 10:28:38,226 - INFO - CACHE MISS: Fetching new data for ChIJd6CVJppifg0RSHJECwm2cwo
+2025-08-13 10:28:38,430 - INFO - SUCCESS: Fetched and cached data for ChIJd6CVJppifg0RSHJECwm2cwo (Power Gym, salle de musculation, fitness et cardio, Oran)
+2025-08-13 10:28:38,534 - INFO - CACHE MISS: Fetching new data for ChIJK_vF1JCJfg0Rpjbp7l8Dg7w
+2025-08-13 10:28:38,765 - INFO - SUCCESS: Fetched and cached data for ChIJK_vF1JCJfg0Rpjbp7l8Dg7w (RD GYM, Oran)
+2025-08-13 10:28:38,869 - INFO - CACHE MISS: Fetching new data for ChIJK799SdazjxIRYSsw2ECSJUg
+2025-08-13 10:28:39,050 - INFO - SUCCESS: Fetched and cached data for ChIJK799SdazjxIRYSsw2ECSJUg (SPA Maison Al Fatiha (Hammam & Massage | Que pour Femmes), P2WH+F9G)
+2025-08-13 10:28:39,155 - INFO - CACHE MISS: Fetching new data for ChIJi8T-FwBjfg0RCLKi4CBs5mg
+2025-08-13 10:28:39,438 - INFO - SUCCESS: Fetched and cached data for ChIJi8T-FwBjfg0RCLKi4CBs5mg (Power fitness Oran plaza, Oran)
+2025-08-13 10:28:39,540 - INFO - CACHE MISS: Fetching new data for ChIJu-pcORWJfg0RbSXcvYiMuZs
+2025-08-13 10:28:39,727 - INFO - SUCCESS: Fetched and cached data for ChIJu-pcORWJfg0RbSXcvYiMuZs (Planete Fitness, Oran)
+2025-08-13 10:28:39,830 - INFO - CACHE MISS: Fetching new data for ChIJw7IuBX138RIRBo0xFspbdSc
+2025-08-13 10:28:40,042 - INFO - SUCCESS: Fetched and cached data for ChIJw7IuBX138RIRBo0xFspbdSc (Premium Sport Club Constantine, Constantine)
+2025-08-13 10:28:40,144 - INFO - CACHE MISS: Fetching new data for ChIJM3aQIgB38RIRBpZIC15XwA8
+2025-08-13 10:28:40,340 - INFO - SUCCESS: Fetched and cached data for ChIJM3aQIgB38RIRBpZIC15XwA8 (Beast_gym_25, Constantine)
+2025-08-13 10:28:40,445 - INFO - CACHE MISS: Fetching new data for ChIJMe0w0QiJfg0Rt4Qfk4sQhTA
+2025-08-13 10:28:40,689 - INFO - SUCCESS: Fetched and cached data for ChIJMe0w0QiJfg0Rt4Qfk4sQhTA (Maxi Fitness, Oran)
+2025-08-13 10:28:40,792 - INFO - CACHE MISS: Fetching new data for ChIJZasfz3p38RIRYWmhijT_MzM
+2025-08-13 10:28:40,964 - INFO - SUCCESS: Fetched and cached data for ChIJZasfz3p38RIRYWmhijT_MzM (Chaaba, Constantine)
+2025-08-13 10:28:41,069 - INFO - CACHE MISS: Fetching new data for ChIJGSIr3oCJfg0RkX0Le6BU9F4
+2025-08-13 10:28:41,243 - INFO - SUCCESS: Fetched and cached data for ChIJGSIr3oCJfg0RkX0Le6BU9F4 (World Gym Oran, Oran)
+2025-08-13 10:28:41,346 - INFO - CACHE MISS: Fetching new data for ChIJS528Sux28RIRfOZdo7e4cmQ
+2025-08-13 10:28:41,559 - INFO - SUCCESS: Fetched and cached data for ChIJS528Sux28RIRfOZdo7e4cmQ (La Sall De Sports, Constantine)
+2025-08-13 10:28:41,664 - INFO - CACHE MISS: Fetching new data for ChIJActANKCyjxIRKI-855fKOiU
+2025-08-13 10:28:41,890 - INFO - SUCCESS: Fetched and cached data for ChIJActANKCyjxIRKI-855fKOiU (Body Fitness Center, Rue Rabah Takdjourt)
+2025-08-13 10:28:41,991 - INFO - CACHE MISS: Fetching new data for ChIJ0y8hd06Ifg0RqXYaGq07If8
+2025-08-13 10:28:42,222 - INFO - SUCCESS: Fetched and cached data for ChIJ0y8hd06Ifg0RqXYaGq07If8 (Salle de sports Hichami Gym, Oran)
+2025-08-13 10:28:42,327 - INFO - CACHE MISS: Fetching new data for ChIJ2SzjsjWIfg0R_Rmlp3x2Exo
+2025-08-13 10:28:42,594 - INFO - SUCCESS: Fetched and cached data for ChIJ2SzjsjWIfg0R_Rmlp3x2Exo (Olympia Gym, Oran)
+2025-08-13 10:28:42,698 - INFO - CACHE MISS: Fetching new data for ChIJc7NIH2CtjxIRHhGbNbLHj-Y
+2025-08-13 10:28:42,910 - INFO - SUCCESS: Fetched and cached data for ChIJc7NIH2CtjxIRHhGbNbLHj-Y (Strongbody hydra, P2QV+FHJ)
+2025-08-13 10:28:43,014 - INFO - CACHE MISS: Fetching new data for ChIJF5auDiB38RIRZ3uWWLC93KI
+2025-08-13 10:28:43,225 - INFO - SUCCESS: Fetched and cached data for ChIJF5auDiB38RIRZ3uWWLC93KI (Salle omnisports du Mansourah, Constantine)
+2025-08-13 10:28:43,329 - INFO - CACHE MISS: Fetching new data for ChIJb7Bv0LazjxIRJ6ecqfEJvqU
+2025-08-13 10:28:43,541 - INFO - SUCCESS: Fetched and cached data for ChIJb7Bv0LazjxIRJ6ecqfEJvqU (Home Fit, 19 Rue de Cirta)
+2025-08-13 10:28:43,646 - INFO - CACHE MISS: Fetching new data for ChIJG8nuKxCyjxIR7SIJWNnQl98
+2025-08-13 10:28:43,859 - INFO - SUCCESS: Fetched and cached data for ChIJG8nuKxCyjxIR7SIJWNnQl98 (ALHAMBRA, RESIDENCE CHABANI - VAL D'HYDRA RESIDENCE CHABANI)
+2025-08-13 10:28:43,961 - INFO - CACHE MISS: Fetching new data for ChIJLUkcdkl38RIRKTo7Ayqgtj0
+2025-08-13 10:28:44,132 - INFO - SUCCESS: Fetched and cached data for ChIJLUkcdkl38RIRKTo7Ayqgtj0 (قاعة متعددة الرياضات برشاش محمد بلقاسم, Constantine)
+2025-08-13 10:28:44,238 - INFO - CACHE MISS: Fetching new data for ChIJY6ZUjYGJfg0RGDd7s6bQrMg
+2025-08-13 10:28:44,463 - INFO - SUCCESS: Fetched and cached data for ChIJY6ZUjYGJfg0RGDd7s6bQrMg (ANSEUR SPORTS " SPORT DE COMBATS " MMA BJJ KICKBOXING, Oran)
+2025-08-13 10:28:44,568 - INFO - CACHE MISS: Fetching new data for ChIJPScwqoOJfg0RGncj5Zb7Ew0
+2025-08-13 10:28:44,791 - INFO - SUCCESS: Fetched and cached data for ChIJPScwqoOJfg0RGncj5Zb7Ew0 (Salle de sports olympia pour elle, Oran)
+2025-08-13 10:28:44,896 - INFO - CACHE MISS: Fetching new data for ChIJIc-BHgCzjxIRDX5CSLe6GJw
+2025-08-13 10:28:45,117 - INFO - SUCCESS: Fetched and cached data for ChIJIc-BHgCzjxIRDX5CSLe6GJw (Golf Elmouradia elmadania, 69 Rue Ali Haddad)
+2025-08-13 10:28:45,219 - INFO - CACHE MISS: Fetching new data for ChIJkasFJwB38RIR8X_l5w-w3w4
+2025-08-13 10:28:45,456 - INFO - SUCCESS: Fetched and cached data for ChIJkasFJwB38RIR8X_l5w-w3w4 (LosCampeon, Constantine)
+2025-08-13 10:28:45,561 - INFO - CACHE MISS: Fetching new data for ChIJoyprkzWIfg0RQ1zYIS5YBuY
+2025-08-13 10:28:45,795 - INFO - SUCCESS: Fetched and cached data for ChIJoyprkzWIfg0RQ1zYIS5YBuY (Metal Sport Boukli, 13 Avenue Ramdane Cheikh، El Makkari)
+2025-08-13 10:28:45,898 - INFO - CACHE MISS: Fetching new data for ChIJ09wr5KqtjxIR3dZSoYafSn8
+2025-08-13 10:28:46,188 - INFO - SUCCESS: Fetched and cached data for ChIJ09wr5KqtjxIR3dZSoYafSn8 (Source fitness & gym, 20 Rue Fabri MARCELLO)
+2025-08-13 10:28:46,294 - INFO - CACHE MISS: Fetching new data for ChIJ77e9TDWJfg0RQoLedhwSAFA
+2025-08-13 10:28:46,544 - INFO - SUCCESS: Fetched and cached data for ChIJ77e9TDWJfg0RQoLedhwSAFA (Wolf Gym Oran, Oran)
+2025-08-13 10:28:46,648 - INFO - CACHE MISS: Fetching new data for ChIJZ8fE-ZF38RIRXQOeOXMtGqE
+2025-08-13 10:28:46,875 - INFO - SUCCESS: Fetched and cached data for ChIJZ8fE-ZF38RIRXQOeOXMtGqE (golden body, Constantine)
+2025-08-13 10:28:46,981 - INFO - CACHE MISS: Fetching new data for ChIJf3-JQD538RIR_xcEUKAlyiE
+2025-08-13 10:28:47,258 - INFO - SUCCESS: Fetched and cached data for ChIJf3-JQD538RIR_xcEUKAlyiE (ASPTTC, Constantine)
+2025-08-13 10:28:47,362 - INFO - CACHE MISS: Fetching new data for ChIJRza29gx38RIRz7DYR30OXfw
+2025-08-13 10:28:47,668 - INFO - SUCCESS: Fetched and cached data for ChIJRza29gx38RIRz7DYR30OXfw (MUSCLE PLUS, Constantine)
+2025-08-13 10:28:47,771 - INFO - CACHE MISS: Fetching new data for ChIJ9dJX_qyzjxIRWtFRFrBWFik
+2025-08-13 10:28:47,998 - INFO - SUCCESS: Fetched and cached data for ChIJ9dJX_qyzjxIRWtFRFrBWFik (Energym Alger, Alger)
+2025-08-13 10:28:48,103 - INFO - CACHE MISS: Fetching new data for ChIJGReyaKd38RIRBVyzPWFQ6VQ
+2025-08-13 10:28:48,297 - INFO - SUCCESS: Fetched and cached data for ChIJGReyaKd38RIRBVyzPWFQ6VQ (Fitness First, Constantine)
+2025-08-13 10:28:48,401 - INFO - CACHE MISS: Fetching new data for ChIJka0WsPh38RIR1SpesFmOSiA
+2025-08-13 10:28:48,593 - INFO - SUCCESS: Fetched and cached data for ChIJka0WsPh38RIR1SpesFmOSiA (FNC FITNESS, Constantine)
+2025-08-13 10:28:48,700 - INFO - CACHE MISS: Fetching new data for ChIJhTVgEdatjxIRrOjU45jQ528
+2025-08-13 10:28:48,925 - INFO - SUCCESS: Fetched and cached data for ChIJhTVgEdatjxIRrOjU45jQ528 (Body Glad Fitness El Madania, 62 Bd Abderrahmane LAALA)
+2025-08-13 10:28:49,028 - INFO - CACHE MISS: Fetching new data for ChIJc5tu1g2Jfg0R-683xfaIVC0
+2025-08-13 10:28:49,251 - INFO - SUCCESS: Fetched and cached data for ChIJc5tu1g2Jfg0R-683xfaIVC0 (Salle De Musculation BOUAFIA GYM, Oran)
+2025-08-13 10:28:49,354 - INFO - CACHE MISS: Fetching new data for ChIJD2oY9a5w8RIRPretNEZieAo
+2025-08-13 10:28:49,613 - INFO - SUCCESS: Fetched and cached data for ChIJD2oY9a5w8RIRPretNEZieAo (Salle Vip Fitness, Constantine)
+2025-08-13 10:28:49,718 - INFO - CACHE MISS: Fetching new data for ChIJO_tXYvmJfg0R5htakdmq-zw
+2025-08-13 10:28:49,957 - INFO - SUCCESS: Fetched and cached data for ChIJO_tXYvmJfg0R5htakdmq-zw (Fox Gym Oran, Oran)
+2025-08-13 10:28:50,061 - INFO - CACHE MISS: Fetching new data for ChIJG8UAJwCJfg0RILNL-fZ4UKI
+2025-08-13 10:28:50,299 - INFO - SUCCESS: Fetched and cached data for ChIJG8UAJwCJfg0RILNL-fZ4UKI (CitePetit, Oran)
+2025-08-13 10:28:50,401 - INFO - CACHE MISS: Fetching new data for ChIJzdcEoddx8RIRyRKah53i4DE
+2025-08-13 10:28:50,622 - INFO - SUCCESS: Fetched and cached data for ChIJzdcEoddx8RIRyRKah53i4DE (MYFiTBOX, Constantine)
+2025-08-13 10:28:50,726 - INFO - CACHE MISS: Fetching new data for ChIJqapeGt6tjxIRExO5t1AJQDY
+2025-08-13 10:28:50,947 - INFO - SUCCESS: Fetched and cached data for ChIJqapeGt6tjxIRExO5t1AJQDY (Oxygène Fitness Club, Hydra)
+2025-08-13 10:28:51,049 - INFO - CACHE MISS: Fetching new data for ChIJi8CDLvh38RIRDOL88n-fFg8
+2025-08-13 10:28:51,304 - INFO - SUCCESS: Fetched and cached data for ChIJi8CDLvh38RIRDOL88n-fFg8 (Joker gym, Constantine)
+2025-08-13 10:28:51,409 - INFO - CACHE MISS: Fetching new data for ChIJkQPy_sF28RIRgRqxOt-dvrI
+2025-08-13 10:28:51,618 - INFO - SUCCESS: Fetched and cached data for ChIJkQPy_sF28RIRgRqxOt-dvrI (No Limits Gym, Constantine)
+2025-08-13 10:28:51,721 - INFO - CACHE MISS: Fetching new data for ChIJSa8iegCzjxIRL2QgiAWC27Y
+2025-08-13 10:28:51,937 - INFO - SUCCESS: Fetched and cached data for ChIJSa8iegCzjxIRL2QgiAWC27Y (Khrouba, Q323+3J2)
+2025-08-13 10:28:52,039 - INFO - CACHE MISS: Fetching new data for ChIJQ1lotKOzjxIRgAzRwuRj_Ic
+2025-08-13 10:28:52,252 - INFO - SUCCESS: Fetched and cached data for ChIJQ1lotKOzjxIRgAzRwuRj_Ic (Mashouda Team, Rue du Philosophe Aristote Ex rue de la Cordiere BT 04 étage 01 Local n 08 1604)
+2025-08-13 10:28:52,357 - INFO - CACHE MISS: Fetching new data for ChIJ-d3Rh3CzjxIRUD7BqwVsoBY
+2025-08-13 10:28:52,598 - INFO - SUCCESS: Fetched and cached data for ChIJ-d3Rh3CzjxIRUD7BqwVsoBY (House of Pain Dz, Bd Hales Said)
+2025-08-13 10:28:52,699 - INFO - CACHE MISS: Fetching new data for ChIJZ1QfNh-tjxIRVioTzFV25oA
+2025-08-13 10:28:52,921 - INFO - SUCCESS: Fetched and cached data for ChIJZ1QfNh-tjxIRVioTzFV25oA (Salle omnisports la concorde, Chem. de la CONCORDE)
+2025-08-13 10:28:53,022 - INFO - CACHE MISS: Fetching new data for ChIJ23eAXwB38RIRxNnMt_cbA8U
+2025-08-13 10:28:53,223 - INFO - SUCCESS: Fetched and cached data for ChIJ23eAXwB38RIRxNnMt_cbA8U (Salle de musculation, Constantine)
+2025-08-13 10:28:53,328 - INFO - CACHE MISS: Fetching new data for ChIJ4-ODrCh38RIRbnQGzM9gVnk
+2025-08-13 10:28:53,670 - INFO - SUCCESS: Fetched and cached data for ChIJ4-ODrCh38RIRbnQGzM9gVnk (Femme active, Constantine)
+2025-08-13 10:28:53,775 - INFO - CACHE MISS: Fetching new data for ChIJvfNB72978RIRnaS7ES0m2zE
+2025-08-13 10:28:53,986 - INFO - SUCCESS: Fetched and cached data for ChIJvfNB72978RIRnaS7ES0m2zE (STAMINA GYM, Constantine)
+2025-08-13 10:28:54,091 - INFO - 
+--- Exporting Data ---
+2025-08-13 10:28:54,091 - INFO -   Total details fetched: 60
+2025-08-13 10:28:54,091 - INFO -   Cache hits: 0
+2025-08-13 10:28:54,101 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl

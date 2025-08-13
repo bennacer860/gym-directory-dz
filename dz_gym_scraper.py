@@ -1,3 +1,4 @@
+
 import os
 import json
 import sqlite3
@@ -153,7 +154,7 @@ def get_details(place_id):
     headers = {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": API_KEY,
-        "X-Goog-FieldMask": "id,displayName,formattedAddress,location,internationalPhoneNumber,websiteUri,regularOpeningHours,rating,userRatingCount,reviews",
+        "X-Goog-FieldMask": "id,displayName,formattedAddress,location,internationalPhoneNumber,websiteUri,regularOpeningHours,rating,userRatingCount,reviews,photos",
     }
     params = {
         "languageCode": LANGUAGE,
@@ -192,10 +193,13 @@ def flatten_record(p):
         p.get("rating"),
         p.get("userRatingCount"),
         hours,
+        p.get("photo_url"),
+        p.get("map_url"),
     ]
 
-def normalize_reviews(p):
-    """Normalizes the reviews for JSONL export."""
+def normalize_place(p):
+    """Normalizes the place data for JSONL export."""
+    # Normalize reviews
     reviews = []
     if p.get("reviews"):
         for review in p["reviews"][:MAX_REVIEWS_PER_PLACE]:
@@ -207,6 +211,22 @@ def normalize_reviews(p):
                 "text": review.get("text", {}).get("text"),
             })
     p["reviews"] = reviews
+
+    # Add photo URL
+    if p.get("photos") and len(p["photos"]) > 0:
+        photo_resource_name = p["photos"][0]["name"]
+        p["photo_url"] = f"https://places.googleapis.com/v1/{photo_resource_name}/media?maxHeightPx=400&key={API_KEY}"
+    else:
+        p["photo_url"] = None
+
+    # Add map URL
+    if p.get("location"):
+        lat = p["location"]["latitude"]
+        lng = p["location"]["longitude"]
+        p["map_url"] = f"https://www.google.com/maps/search/?api=1&query={lat},{lng}&query_place_id={p['id']}"
+    else:
+        p["map_url"] = None
+
     return p
 
 def export_csv(rows):
@@ -217,7 +237,7 @@ def export_csv(rows):
         writer = csv.writer(f)
         writer.writerow([
             "place_id", "name", "address", "lat", "lng", "phone", "website",
-            "rating", "reviews_count", "hours"
+            "rating", "reviews_count", "hours", "photo_url", "map_url"
         ])
         writer.writerows(rows)
 
@@ -236,9 +256,9 @@ def main(test_mode=False):
     """Main function to run the data collection workflow."""
     if test_mode:
         logging.info("--- RUNNING IN TEST MODE ---")
-        CITIES_TO_SEARCH = CITIES[:1]
+        CITIES_TO_SEARCH = CITIES[:3]
         RADIUS_TO_SEARCH = 5000
-        MAX_PAGES_TO_SEARCH = 2
+        MAX_PAGES_TO_SEARCH = 1
     else:
         CITIES_TO_SEARCH = CITIES
         RADIUS_TO_SEARCH = RADIUS_M
@@ -305,8 +325,9 @@ def main(test_mode=False):
 
         if place_details:
             details_count += 1
-            csv_rows.append(flatten_record(place_details))
-            jsonl_payloads.append(normalize_reviews(place_details.copy()))
+            normalized_place = normalize_place(place_details.copy())
+            csv_rows.append(flatten_record(normalized_place))
+            jsonl_payloads.append(normalized_place)
 
     logging.info(f"\n--- Exporting Data ---")
     logging.info(f"  Total details fetched: {details_count}")
