@@ -34,11 +34,11 @@ def call_ollama_api(prompt, ollama_url):
         response_json = json.loads(result.stdout)
         response_text = response_json.get("response", "")
         try:
-            # Find the start and end of the JSON array
-            start_index = response_text.find('[')
-            end_index = response_text.rfind(']')
-            if start_index != -1 and end_index != -1:
-                json_str = response_text[start_index:end_index+1]
+            import re
+            # Use regex to find the JSON array within the response text
+            match = re.search(r'```json\s*(\[.*?\])\s*```', response_text, re.DOTALL)
+            if match:
+                json_str = match.group(1)
                 return json.loads(json_str)
             else:
                 return response_text.strip()
@@ -68,8 +68,27 @@ def process_batch(batch, ollama_url):
 
     # Prompt for amenities
     amenities_prompt = f"""
-    Extrayez une liste d'équipements à partir des avis suivants. Retournez UNIQUEMENT un tableau JSON de chaînes de caractères.
-    Chaque chaîne de caractères doit être un équipement de quelques mots qui peut être utilisé comme filtre (par exemple, "Sauna", "Wi-Fi gratuit", "Parking"). 
+    Extrayez une liste d'équipements à partir des avis suivants. Retournez UNIQUEMENT UN SEUL tableau JSON de chaînes de caractères. 
+    NE Retourne pas de description, seulement la structure JSON example: ```json                                                                                                       │
+     [                                                                                                                                                             │
+      "Spa",                                                                                                                                                      │
+       "Massage Thalassothérapie",                                                                                                                                 │
+       "Hammam",                                                                                                                                                   │
+       "Piscine",                                                                                                                                                  │
+       "Sauna",                                                                                                                                                    │
+       "Vestiaires",                                                                                                                                               │
+       "Zone de Récupération",                                                                                                                                     │
+      "Services Spa",                                                                                                                                             │
+       "Thérapie de Massage",                                                                                                                                      │
+       "Attitude Client Pro",                                                                                                                                      │
+       "Garderie"                                                                                                                                                  │
+     ]                                                                                                                                                             │
+    ```
+    
+    Chaque chaîne de caractères doit être un équipement de quelques mots qui peut être utilisé comme filtre (par exemple, Sauna, Wi-Fi gratuit, Parking,
+    Bar, Nutrition Conseil, Cours Collectifs, Cours de Yoga, Crossfit, Entraînement Fonctionnel, Entraînement Personnel, Entraînement Virtuel, Garderie,
+    Hammam, Musculation, Parking, Pilates, Piscine, Poids Lourds, Powerlifting, Sauna, Services Spa, Thérapie de Massage, Vestiaires, Zone de Récupération,
+    Équipements Cardio, Équipements High-Tech, Équipements Modernes, Équipements de Base). 
     Evitez les lsit de mot qui ne contiennt pas du francais ou des mot qui n'ont aucun rapport avec le sujet du sport.
     Avis:
 {all_reviews}
@@ -77,7 +96,7 @@ def process_batch(batch, ollama_url):
     amenities_response = call_ollama_api(amenities_prompt, ollama_url)
     amenities = []
     if amenities_response:
-        amenities = amenities_response if amenities_response else []
+        amenities = amenities_response
 
     # Get descriptions for each gym in the batch
     for gym in batch:
