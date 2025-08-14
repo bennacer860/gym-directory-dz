@@ -1,0 +1,177 @@
+2025-08-14 16:24:22,782 - INFO - --- RUNNING IN TEST MODE (Details) ---
+2025-08-14 16:24:22,782 - INFO - 
+Processing 5 unique place IDs for details.
+
+2025-08-14 16:24:22,782 - INFO - CACHE MISS (1/5): Fetching new data for ChIJadHET_axjxIRGOJLuLvtGFI
+2025-08-14 16:24:23,077 - INFO - SUCCESS (1/5): Fetched and cached data for ChIJadHET_axjxIRGOJLuLvtGFI (HM spa et sport, Unknown)
+2025-08-14 16:24:23,183 - INFO - CACHE MISS (2/5): Fetching new data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ
+2025-08-14 16:24:23,404 - INFO - SUCCESS (2/5): Fetched and cached data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ (BRfoot, Unknown)
+2025-08-14 16:24:23,510 - INFO - CACHE MISS (3/5): Fetching new data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs
+2025-08-14 16:24:23,699 - INFO - SUCCESS (3/5): Fetched and cached data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs (California Gym, Unknown)
+2025-08-14 16:24:23,805 - INFO - CACHE MISS (4/5): Fetching new data for ChIJd-zKUF6xjxIROOk5ORe8yw4
+2025-08-14 16:24:24,013 - INFO - SUCCESS (4/5): Fetched and cached data for ChIJd-zKUF6xjxIROOk5ORe8yw4 (FLEXON Club99, Unknown)
+2025-08-14 16:24:24,118 - INFO - CACHE MISS (5/5): Fetching new data for ChIJvStaVbmtjxIRdUVxesIlutU
+2025-08-14 16:24:24,328 - INFO - SUCCESS (5/5): Fetched and cached data for ChIJvStaVbmtjxIRdUVxesIlutU (Citi'Zen Gym Club, Unknown)
+2025-08-14 16:24:24,432 - INFO - 
+--- Exporting Data ---
+2025-08-14 16:24:24,432 - INFO -   Total unique place IDs processed: 5
+2025-08-14 16:24:24,432 - INFO -   Cache hits: 0
+2025-08-14 16:24:24,433 - INFO -   New details fetched: 5
+2025-08-14 16:24:24,434 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
+2025-08-14 16:27:30,399 - INFO - --- RUNNING IN TEST MODE (Details) ---
+2025-08-14 16:27:30,399 - INFO - 
+Processing 5 unique place IDs for details.
+
+2025-08-14 16:27:30,399 - INFO - CACHE MISS (1/5): Fetching new data for ChIJadHET_axjxIRGOJLuLvtGFI
+2025-08-14 16:27:30,578 - INFO - SUCCESS (1/5): Fetched and cached data for ChIJadHET_axjxIRGOJLuLvtGFI (HM spa et sport, Alger)
+2025-08-14 16:27:30,683 - INFO - CACHE MISS (2/5): Fetching new data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ
+2025-08-14 16:27:30,881 - INFO - SUCCESS (2/5): Fetched and cached data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ (BRfoot, Alger)
+2025-08-14 16:27:30,987 - INFO - CACHE MISS (3/5): Fetching new data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs
+2025-08-14 16:27:31,185 - INFO - SUCCESS (3/5): Fetched and cached data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs (California Gym, Alger)
+2025-08-14 16:27:31,290 - INFO - CACHE MISS (4/5): Fetching new data for ChIJd-zKUF6xjxIROOk5ORe8yw4
+2025-08-14 16:27:31,523 - INFO - SUCCESS (4/5): Fetched and cached data for ChIJd-zKUF6xjxIROOk5ORe8yw4 (FLEXON Club99, Alger)
+2025-08-14 16:27:31,628 - INFO - CACHE MISS (5/5): Fetching new data for ChIJvStaVbmtjxIRdUVxesIlutU
+2025-08-14 16:27:31,818 - INFO - SUCCESS (5/5): Fetched and cached data for ChIJvStaVbmtjxIRdUVxesIlutU (Citi'Zen Gym Club, Alger)
+2025-08-14 16:27:31,923 - INFO - 
+--- Exporting Data ---
+2025-08-14 16:27:31,923 - INFO -   Total unique place IDs processed: 5
+2025-08-14 16:27:31,924 - INFO -   Cache hits: 0
+2025-08-14 16:27:31,924 - INFO -   New details fetched: 5
+2025-08-14 16:27:31,925 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
+2025-08-14 16:27:52,171 - INFO - 
+Processing 40 unique place IDs for details.
+
+2025-08-14 16:27:52,171 - INFO - CACHE HIT (1/40): Using cached data for ChIJadHET_axjxIRGOJLuLvtGFI (HM spa et sport, Alger)
+2025-08-14 16:27:52,171 - INFO - CACHE HIT (2/40): Using cached data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ (BRfoot, Alger)
+2025-08-14 16:27:52,171 - INFO - CACHE HIT (3/40): Using cached data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs (California Gym, Alger)
+2025-08-14 16:27:52,171 - INFO - CACHE HIT (4/40): Using cached data for ChIJd-zKUF6xjxIROOk5ORe8yw4 (FLEXON Club99, Alger)
+2025-08-14 16:27:52,172 - INFO - CACHE HIT (5/40): Using cached data for ChIJvStaVbmtjxIRdUVxesIlutU (Citi'Zen Gym Club, Alger)
+2025-08-14 16:27:52,172 - INFO - CACHE MISS (6/40): Fetching new data for ChIJ6a9YkHlSjhIRSDxPElIU_Rs
+2025-08-14 16:27:52,413 - INFO - SUCCESS (6/40): Fetched and cached data for ChIJ6a9YkHlSjhIRSDxPElIU_Rs (Hani Hôtel, Alger)
+2025-08-14 16:27:52,519 - INFO - CACHE MISS (7/40): Fetching new data for ChIJUVxzPvGtjxIRkDGOr3IdMqA
+2025-08-14 16:27:52,702 - INFO - SUCCESS (7/40): Fetched and cached data for ChIJUVxzPvGtjxIRkDGOr3IdMqA (SARL THE GYMLAND, Alger)
+2025-08-14 16:27:52,807 - INFO - CACHE MISS (8/40): Fetching new data for ChIJPyGgz66jjxIRYsBRxWBLBr4
+2025-08-14 16:27:53,053 - INFO - SUCCESS (8/40): Fetched and cached data for ChIJPyGgz66jjxIRYsBRxWBLBr4 (DZ1 Foot & Fitness Zeralda, Alger)
+2025-08-14 16:27:53,159 - INFO - CACHE MISS (9/40): Fetching new data for ChIJIc-BHgCzjxIRDX5CSLe6GJw
+2025-08-14 16:27:53,380 - INFO - SUCCESS (9/40): Fetched and cached data for ChIJIc-BHgCzjxIRDX5CSLe6GJw (Golf Elmouradia elmadania, Alger)
+2025-08-14 16:27:53,481 - INFO - CACHE MISS (10/40): Fetching new data for ChIJFdlXlLOxjxIRhKwmWF2Vwcg
+2025-08-14 16:27:53,725 - INFO - SUCCESS (10/40): Fetched and cached data for ChIJFdlXlLOxjxIRhKwmWF2Vwcg (Cosmo GYM, Alger)
+2025-08-14 16:27:53,830 - INFO - CACHE MISS (11/40): Fetching new data for ChIJo156IWRPjhIRQbQpCR_Z8Hs
+2025-08-14 16:27:54,044 - INFO - SUCCESS (11/40): Fetched and cached data for ChIJo156IWRPjhIRQbQpCR_Z8Hs (Kora Land 9 Bordj El Kiffan, Alger)
+2025-08-14 16:27:54,149 - INFO - CACHE MISS (12/40): Fetching new data for ChIJp3U8FQCxjxIRG2Ty2j5chS8
+2025-08-14 16:27:54,388 - INFO - SUCCESS (12/40): Fetched and cached data for ChIJp3U8FQCxjxIRG2Ty2j5chS8 (Ma fitness Cheraga, Alger)
+2025-08-14 16:27:54,493 - INFO - CACHE MISS (13/40): Fetching new data for ChIJzU8JNW-tjxIRDD2ZeObaUtg
+2025-08-14 16:27:54,706 - INFO - SUCCESS (13/40): Fetched and cached data for ChIJzU8JNW-tjxIRDD2ZeObaUtg (Fitness city, Alger)
+2025-08-14 16:27:54,812 - INFO - CACHE MISS (14/40): Fetching new data for ChIJb7Bv0LazjxIRJ6ecqfEJvqU
+2025-08-14 16:27:55,033 - INFO - SUCCESS (14/40): Fetched and cached data for ChIJb7Bv0LazjxIRJ6ecqfEJvqU (Home Fit, Alger)
+2025-08-14 16:27:55,138 - INFO - CACHE MISS (15/40): Fetching new data for ChIJGWIzUHStjxIRQuy426g9XXY
+2025-08-14 16:27:55,326 - INFO - SUCCESS (15/40): Fetched and cached data for ChIJGWIzUHStjxIRQuy426g9XXY (GIGA Fitness, Alger)
+2025-08-14 16:27:55,432 - INFO - CACHE MISS (16/40): Fetching new data for ChIJ4bDzVOGxjxIRYD0Np2pKqKc
+2025-08-14 16:27:55,672 - INFO - SUCCESS (16/40): Fetched and cached data for ChIJ4bDzVOGxjxIRYD0Np2pKqKc (Tiger Sport, Alger)
+2025-08-14 16:27:55,778 - INFO - CACHE MISS (17/40): Fetching new data for ChIJK1_m4iywjxIREPPkm71KYX0
+2025-08-14 16:27:55,963 - INFO - SUCCESS (17/40): Fetched and cached data for ChIJK1_m4iywjxIREPPkm71KYX0 (JB Fitness, Alger)
+2025-08-14 16:27:56,069 - INFO - CACHE MISS (18/40): Fetching new data for ChIJX6xxuU-xjxIRbEZYaRe2wNU
+2025-08-14 16:27:56,272 - INFO - SUCCESS (18/40): Fetched and cached data for ChIJX6xxuU-xjxIRbEZYaRe2wNU (Best body gym cheraga, Alger)
+2025-08-14 16:27:56,377 - INFO - CACHE MISS (19/40): Fetching new data for ChIJk3jfX_VTjhIRaMgpb2XqROk
+2025-08-14 16:27:56,714 - INFO - SUCCESS (19/40): Fetched and cached data for ChIJk3jfX_VTjhIRaMgpb2XqROk (Golden Fitness, Alger)
+2025-08-14 16:27:56,817 - INFO - CACHE MISS (20/40): Fetching new data for ChIJk613_pGvjxIRx-EnU07CBqg
+2025-08-14 16:27:57,046 - INFO - SUCCESS (20/40): Fetched and cached data for ChIJk613_pGvjxIRx-EnU07CBqg (Elle fit & Spa salle de sport, Alger)
+2025-08-14 16:27:57,151 - INFO - CACHE MISS (21/40): Fetching new data for ChIJbxyqkWl9fg0REfduGRrOkaM
+2025-08-14 16:27:57,361 - INFO - SUCCESS (21/40): Fetched and cached data for ChIJbxyqkWl9fg0REfduGRrOkaM (ma-fitness, Oran)
+2025-08-14 16:27:57,466 - INFO - CACHE MISS (22/40): Fetching new data for ChIJd6CVJppifg0RSHJECwm2cwo
+2025-08-14 16:27:57,675 - INFO - SUCCESS (22/40): Fetched and cached data for ChIJd6CVJppifg0RSHJECwm2cwo (Power Gym, salle de musculation, fitness et cardio, Oran)
+2025-08-14 16:27:57,776 - INFO - CACHE MISS (23/40): Fetching new data for ChIJN4rsvCKJfg0RvlojTYmgGZA
+2025-08-14 16:27:57,961 - INFO - SUCCESS (23/40): Fetched and cached data for ChIJN4rsvCKJfg0RvlojTYmgGZA (Fitness factory, Oran)
+2025-08-14 16:27:58,067 - INFO - CACHE MISS (24/40): Fetching new data for ChIJmxRpZQeJfg0RIJnWwQny728
+2025-08-14 16:27:58,272 - INFO - SUCCESS (24/40): Fetched and cached data for ChIJmxRpZQeJfg0RIJnWwQny728 (Oxygen Gym Oran, Oran)
+2025-08-14 16:27:58,373 - INFO - CACHE MISS (25/40): Fetching new data for ChIJjfdzY05jfg0RBKkcj2-X8VQ
+2025-08-14 16:27:58,618 - INFO - SUCCESS (25/40): Fetched and cached data for ChIJjfdzY05jfg0RBKkcj2-X8VQ (Cardio fitness center, Oran)
+2025-08-14 16:27:58,719 - INFO - CACHE MISS (26/40): Fetching new data for ChIJMe0w0QiJfg0Rt4Qfk4sQhTA
+2025-08-14 16:27:58,946 - INFO - SUCCESS (26/40): Fetched and cached data for ChIJMe0w0QiJfg0Rt4Qfk4sQhTA (Maxi Fitness, Oran)
+2025-08-14 16:27:59,051 - INFO - CACHE MISS (27/40): Fetching new data for ChIJJ0blEhZ9fg0RWvLLuK6VsPo
+2025-08-14 16:27:59,269 - INFO - SUCCESS (27/40): Fetched and cached data for ChIJJ0blEhZ9fg0RWvLLuK6VsPo (FITNESSTREET, Oran)
+2025-08-14 16:27:59,374 - INFO - CACHE MISS (28/40): Fetching new data for ChIJE1wygNGJfg0Ruiny-1ObfNo
+2025-08-14 16:27:59,593 - INFO - SUCCESS (28/40): Fetched and cached data for ChIJE1wygNGJfg0Ruiny-1ObfNo (1 6 8 Fitness oran, Oran)
+2025-08-14 16:27:59,699 - INFO - CACHE MISS (29/40): Fetching new data for ChIJ_Xga3ZeJfg0R0edq9StfCh0
+2025-08-14 16:27:59,951 - INFO - SUCCESS (29/40): Fetched and cached data for ChIJ_Xga3ZeJfg0R0edq9StfCh0 (S18 TRAINING CLUB, Oran)
+2025-08-14 16:28:00,056 - INFO - CACHE MISS (30/40): Fetching new data for ChIJ2SzjsjWIfg0R_Rmlp3x2Exo
+2025-08-14 16:28:00,290 - INFO - SUCCESS (30/40): Fetched and cached data for ChIJ2SzjsjWIfg0R_Rmlp3x2Exo (Olympia Gym, Oran)
+2025-08-14 16:28:00,395 - INFO - CACHE MISS (31/40): Fetching new data for ChIJG8UAJwCJfg0RILNL-fZ4UKI
+2025-08-14 16:28:00,607 - INFO - SUCCESS (31/40): Fetched and cached data for ChIJG8UAJwCJfg0RILNL-fZ4UKI (CitePetit, Oran)
+2025-08-14 16:28:00,709 - INFO - CACHE MISS (32/40): Fetching new data for ChIJi8T-FwBjfg0RCLKi4CBs5mg
+2025-08-14 16:28:00,913 - INFO - SUCCESS (32/40): Fetched and cached data for ChIJi8T-FwBjfg0RCLKi4CBs5mg (Power fitness Oran plaza, Oran)
+2025-08-14 16:28:01,019 - INFO - CACHE MISS (33/40): Fetching new data for ChIJu-pcORWJfg0RbSXcvYiMuZs
+2025-08-14 16:28:01,227 - INFO - SUCCESS (33/40): Fetched and cached data for ChIJu-pcORWJfg0RbSXcvYiMuZs (Planete Fitness, Oran)
+2025-08-14 16:28:01,332 - INFO - CACHE MISS (34/40): Fetching new data for ChIJO_tXYvmJfg0R5htakdmq-zw
+2025-08-14 16:28:01,566 - INFO - SUCCESS (34/40): Fetched and cached data for ChIJO_tXYvmJfg0R5htakdmq-zw (Fox Gym Oran, Oran)
+2025-08-14 16:28:01,671 - INFO - CACHE MISS (35/40): Fetching new data for ChIJo5HC6rxifg0R68W-F5Zvws8
+2025-08-14 16:28:01,886 - INFO - SUCCESS (35/40): Fetched and cached data for ChIJo5HC6rxifg0R68W-F5Zvws8 (DIDI GYM, Oran)
+2025-08-14 16:28:01,991 - INFO - CACHE MISS (36/40): Fetching new data for ChIJGSIr3oCJfg0RkX0Le6BU9F4
+2025-08-14 16:28:02,180 - INFO - SUCCESS (36/40): Fetched and cached data for ChIJGSIr3oCJfg0RkX0Le6BU9F4 (World Gym Oran, Oran)
+2025-08-14 16:28:02,285 - INFO - CACHE MISS (37/40): Fetching new data for ChIJK_vF1JCJfg0Rpjbp7l8Dg7w
+2025-08-14 16:28:02,489 - INFO - SUCCESS (37/40): Fetched and cached data for ChIJK_vF1JCJfg0Rpjbp7l8Dg7w (RD GYM, Oran)
+2025-08-14 16:28:02,595 - INFO - CACHE MISS (38/40): Fetching new data for ChIJpaMnjxljfg0Rptsb7KzXZ78
+2025-08-14 16:28:02,819 - INFO - SUCCESS (38/40): Fetched and cached data for ChIJpaMnjxljfg0Rptsb7KzXZ78 (PLANET GYM, Oran)
+2025-08-14 16:28:02,925 - INFO - CACHE MISS (39/40): Fetching new data for ChIJd20UrCRjfg0RaXqW4xMtVNs
+2025-08-14 16:28:03,121 - INFO - SUCCESS (39/40): Fetched and cached data for ChIJd20UrCRjfg0RaXqW4xMtVNs (LEGION FITNESS, Oran)
+2025-08-14 16:28:03,226 - INFO - CACHE MISS (40/40): Fetching new data for ChIJ0y8hd06Ifg0RqXYaGq07If8
+2025-08-14 16:28:03,462 - INFO - SUCCESS (40/40): Fetched and cached data for ChIJ0y8hd06Ifg0RqXYaGq07If8 (Salle de sports Hichami Gym, Oran)
+2025-08-14 16:28:03,567 - INFO - 
+--- Exporting Data ---
+2025-08-14 16:28:03,567 - INFO -   Total unique place IDs processed: 40
+2025-08-14 16:28:03,567 - INFO -   Cache hits: 5
+2025-08-14 16:28:03,567 - INFO -   New details fetched: 35
+2025-08-14 16:28:03,569 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
+2025-08-14 16:28:09,525 - INFO - 
+Processing 40 unique place IDs for details.
+
+2025-08-14 16:28:09,525 - INFO - CACHE HIT (1/40): Using cached data for ChIJadHET_axjxIRGOJLuLvtGFI (HM spa et sport, Alger)
+2025-08-14 16:28:09,525 - INFO - CACHE HIT (2/40): Using cached data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ (BRfoot, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (3/40): Using cached data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs (California Gym, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (4/40): Using cached data for ChIJd-zKUF6xjxIROOk5ORe8yw4 (FLEXON Club99, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (5/40): Using cached data for ChIJvStaVbmtjxIRdUVxesIlutU (Citi'Zen Gym Club, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (6/40): Using cached data for ChIJ6a9YkHlSjhIRSDxPElIU_Rs (Hani Hôtel, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (7/40): Using cached data for ChIJUVxzPvGtjxIRkDGOr3IdMqA (SARL THE GYMLAND, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (8/40): Using cached data for ChIJPyGgz66jjxIRYsBRxWBLBr4 (DZ1 Foot & Fitness Zeralda, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (9/40): Using cached data for ChIJIc-BHgCzjxIRDX5CSLe6GJw (Golf Elmouradia elmadania, Alger)
+2025-08-14 16:28:09,526 - INFO - CACHE HIT (10/40): Using cached data for ChIJFdlXlLOxjxIRhKwmWF2Vwcg (Cosmo GYM, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (11/40): Using cached data for ChIJo156IWRPjhIRQbQpCR_Z8Hs (Kora Land 9 Bordj El Kiffan, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (12/40): Using cached data for ChIJp3U8FQCxjxIRG2Ty2j5chS8 (Ma fitness Cheraga, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (13/40): Using cached data for ChIJzU8JNW-tjxIRDD2ZeObaUtg (Fitness city, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (14/40): Using cached data for ChIJb7Bv0LazjxIRJ6ecqfEJvqU (Home Fit, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (15/40): Using cached data for ChIJGWIzUHStjxIRQuy426g9XXY (GIGA Fitness, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (16/40): Using cached data for ChIJ4bDzVOGxjxIRYD0Np2pKqKc (Tiger Sport, Alger)
+2025-08-14 16:28:09,527 - INFO - CACHE HIT (17/40): Using cached data for ChIJK1_m4iywjxIREPPkm71KYX0 (JB Fitness, Alger)
+2025-08-14 16:28:09,528 - INFO - CACHE HIT (18/40): Using cached data for ChIJX6xxuU-xjxIRbEZYaRe2wNU (Best body gym cheraga, Alger)
+2025-08-14 16:28:09,528 - INFO - CACHE HIT (19/40): Using cached data for ChIJk3jfX_VTjhIRaMgpb2XqROk (Golden Fitness, Alger)
+2025-08-14 16:28:09,528 - INFO - CACHE HIT (20/40): Using cached data for ChIJk613_pGvjxIRx-EnU07CBqg (Elle fit & Spa salle de sport, Alger)
+2025-08-14 16:28:09,528 - INFO - CACHE HIT (21/40): Using cached data for ChIJbxyqkWl9fg0REfduGRrOkaM (ma-fitness, Oran)
+2025-08-14 16:28:09,528 - INFO - CACHE HIT (22/40): Using cached data for ChIJd6CVJppifg0RSHJECwm2cwo (Power Gym, salle de musculation, fitness et cardio, Oran)
+2025-08-14 16:28:09,528 - INFO - CACHE HIT (23/40): Using cached data for ChIJN4rsvCKJfg0RvlojTYmgGZA (Fitness factory, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (24/40): Using cached data for ChIJmxRpZQeJfg0RIJnWwQny728 (Oxygen Gym Oran, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (25/40): Using cached data for ChIJjfdzY05jfg0RBKkcj2-X8VQ (Cardio fitness center, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (26/40): Using cached data for ChIJMe0w0QiJfg0Rt4Qfk4sQhTA (Maxi Fitness, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (27/40): Using cached data for ChIJJ0blEhZ9fg0RWvLLuK6VsPo (FITNESSTREET, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (28/40): Using cached data for ChIJE1wygNGJfg0Ruiny-1ObfNo (1 6 8 Fitness oran, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (29/40): Using cached data for ChIJ_Xga3ZeJfg0R0edq9StfCh0 (S18 TRAINING CLUB, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (30/40): Using cached data for ChIJ2SzjsjWIfg0R_Rmlp3x2Exo (Olympia Gym, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (31/40): Using cached data for ChIJG8UAJwCJfg0RILNL-fZ4UKI (CitePetit, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (32/40): Using cached data for ChIJi8T-FwBjfg0RCLKi4CBs5mg (Power fitness Oran plaza, Oran)
+2025-08-14 16:28:09,529 - INFO - CACHE HIT (33/40): Using cached data for ChIJu-pcORWJfg0RbSXcvYiMuZs (Planete Fitness, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (34/40): Using cached data for ChIJO_tXYvmJfg0R5htakdmq-zw (Fox Gym Oran, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (35/40): Using cached data for ChIJo5HC6rxifg0R68W-F5Zvws8 (DIDI GYM, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (36/40): Using cached data for ChIJGSIr3oCJfg0RkX0Le6BU9F4 (World Gym Oran, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (37/40): Using cached data for ChIJK_vF1JCJfg0Rpjbp7l8Dg7w (RD GYM, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (38/40): Using cached data for ChIJpaMnjxljfg0Rptsb7KzXZ78 (PLANET GYM, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (39/40): Using cached data for ChIJd20UrCRjfg0RaXqW4xMtVNs (LEGION FITNESS, Oran)
+2025-08-14 16:28:09,530 - INFO - CACHE HIT (40/40): Using cached data for ChIJ0y8hd06Ifg0RqXYaGq07If8 (Salle de sports Hichami Gym, Oran)
+2025-08-14 16:28:09,530 - INFO - 
+--- Exporting Data ---
+2025-08-14 16:28:09,530 - INFO -   Total unique place IDs processed: 40
+2025-08-14 16:28:09,530 - INFO -   Cache hits: 40
+2025-08-14 16:28:09,530 - INFO -   New details fetched: 0
+2025-08-14 16:28:09,531 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
