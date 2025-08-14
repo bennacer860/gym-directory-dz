@@ -1,0 +1,4 @@
+2025-08-14 13:45:24,832 - INFO - Starting gym data transformation.
+2025-08-14 13:45:24,835 - INFO - Running in test mode. Processing only the first gym.
+2025-08-14 13:45:24,835 - INFO - Processing batch 1/1
+2025-08-14 13:45:57,504 - INFO - Transformation complete. Output written to data/ui-data.json
