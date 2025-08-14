@@ -106,33 +106,57 @@ The script will capture all reviews returned by the Place Details API call. A ha
     *   **Field Masking:** The script uses field masks to request only the necessary data, which can help reduce costs by avoiding higher-priced data SKUs (e.g., by dropping `reviews`, `internationalPhoneNumber`, or `websiteUri`).
     *   **Rolling Refresh:** The caching mechanism with a 30-day refresh period ensures that we don't repeatedly fetch data for the same place, significantly reducing costs on subsequent runs. A strategy to refresh only a fraction of the cache daily (e.g., `1/30th`) could further smoothen the costs.
 
-## I) How to Run
+## How to Run
 
-1.  **Set up a virtual environment:**
+### `scripts/dz_gym_scraper.py`
+
+This script scrapes gym information from Google Places API.
+
+**To run the script:**
+
+1.  Set up a virtual environment:
     ```bash
     python3 -m venv venv
     source venv/bin/activate
     ```
 
-2.  **Install dependencies:**
+2.  Install dependencies:
     ```bash
     pip install requests python-dateutil python-dotenv
     ```
 
-3.  **Set the API key:**
+3.  Set the API key:
 
     Create a `.env` file in the root of the project and add the following line:
     ```
     GOOGLE_PLACES_API_KEY=YOUR_API_KEY
     ```
 
-5.  **Run in test mode:**
+4.  Run the script:
     ```bash
-    python dz_gym_scraper.py --test-mode
+    python3 scripts/dz_gym_scraper.py
+    ```
+    You can also run in test mode to only process a small subset of cities:
+    ```bash
+    python3 scripts/dz_gym_scraper.py --test-mode
     ```
 
+### `scripts/transform_to_directory_format.py`
 
-*   **Data Retention:** `place_id` is stored indefinitely. All other data fetched from the Places API is treated as cacheable for a maximum of 30 days.
-*   **Attribution:** Any application that displays this data on a map must use a Google Map and display the proper Google attributions.
-*   **No Scraping:** The script does not scrape HTML content and relies solely on the Google Places API.
-*   **Basemap:** Places content will not be mixed with non-Google basemaps in any frontend application.
+This script transforms the scraped gym data into a UI-friendly format using a local Ollama instance.
+
+**To run the script:**
+
+1.  Make sure you have a local Ollama instance running.
+2.  Pull the desired model (e.g., `ollama pull wizardlm2:7b`).
+3.  Run the script:
+    ```bash
+    python3 scripts/transform_to_directory_format.py
+    ```
+**Optional arguments:**
+*   `--input-file`: Path to the input JSONL file (default: `data/gyms_dz.jsonl`).
+*   `--output-file`: Path to the output JSON file (default: `data/ui-data.json`).
+*   `--log-file`: Path to the log file (default: `logs/transformer.log`).
+*   `--test-mode`: Process only the first gym entry.
+*   `--batch-size`: Batch size for Ollama calls (default: 1).
+*   `--ollama-url`: URL for the local Ollama API (default: `http://localhost:11434/api/generate`).

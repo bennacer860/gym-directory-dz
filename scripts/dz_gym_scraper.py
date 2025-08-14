@@ -39,7 +39,7 @@ MAX_REVIEWS_PER_PLACE = 100
 DB_PATH = "data/places_cache.db"
 CSV_PATH = "data/gyms_dz.csv"
 JSONL_PATH = "data/gyms_dz.jsonl"
-LOG_PATH = "data/scraper.log"
+LOG_FILE = "logs/scraper.log"
 
 # --- LOGGING SETUP ---
 log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
