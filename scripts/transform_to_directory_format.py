@@ -25,10 +25,10 @@ def call_ollama_api(prompt, ollama_url, is_json_response=False):
             "-s",
             ollama_url,
             "-d",
-            json.dumps({"model": "wizardlm2:7b", "prompt": prompt, "stream": False}),
+            json.dumps({"model": "wizardlm2:7b", "prompt": prompt, "stream": False}, ensure_ascii=False),
         ]
         result = subprocess.run(
-            curl_command, capture_output=True, text=True, check=True
+            curl_command, capture_output=True, text=True, check=True, encoding="utf-8"
         )
         response_json = json.loads(result.stdout)
         response_text = response_json.get("response", "")
@@ -93,7 +93,11 @@ def process_batch(batch, ollama_url):
     Bar, Nutrition Conseil, Cours Collectifs, Cours de Yoga, Crossfit, Entraînement Fonctionnel, Entraînement Personnel, Entraînement Virtuel, Garderie,
     Hammam, Musculation, Parking, Pilates, Piscine, Poids Lourds, Powerlifting, Sauna, Services Spa, Thérapie de Massage, Vestiaires, Zone de Récupération,
     Équipements Cardio, Équipements High-Tech, Équipements Modernes, Équipements de Base). 
-    Evitez les lsit de mot qui ne contiennt pas du francais ou des mot qui n'ont aucun rapport avec le sujet du sport. GARDEZ la list moins de 10 elements 
+    EVITEZ de dans la list
+    - Des tags qui ne contiennent pas du francais ou des mot qui n'ont aucun rapport avec le sujet du sport.
+    - Des tags qui ont de nom de personne
+    - Des tags qui ont des critique
+    GARDEZ la list moins de 10 elements 
     Avis:
 {all_reviews}
     """
@@ -196,7 +200,7 @@ def main():
     logging.info("Starting gym data transformation.")
 
     try:
-        with open(args.input_file, 'r') as f:
+        with open(args.input_file, 'r', encoding='utf-8') as f:
             gyms = [json.loads(line) for line in f]
     except FileNotFoundError:
         logging.error(f"Input file not found: {args.input_file}")
@@ -234,9 +238,9 @@ def main():
             "womenOnlyFacility": women_only
         })
 
-    with open(args.output_file, 'w') as f:
+    with open(args.output_file, 'w', encoding='utf-8') as f:
         f.write("export default ")
-        json.dump(transformed_gyms, f, indent=2)
+        json.dump(transformed_gyms, f, indent=2, ensure_ascii=False)
         f.write(";")
 
     logging.info(f"Transformation complete. Output written to {args.output_file}")

@@ -10,3 +10,21 @@
 2025-08-15 10:08:10,136 - INFO - Running in test mode. Processing only the first gym.
 2025-08-15 10:08:10,136 - INFO - Processing gym 1/1
 2025-08-15 10:09:00,359 - INFO - Transformation complete. Output written to data/ui-data.ts
+2025-08-15 14:25:58,329 - INFO - Starting gym data transformation.
+2025-08-15 14:25:58,331 - INFO - Running in test mode. Processing only the first gym.
+2025-08-15 14:25:58,331 - INFO - Processing gym 1/1
+2025-08-15 14:26:47,372 - INFO - Transformation complete. Output written to data/ui-data.ts
+2025-08-15 14:30:13,462 - INFO - Starting gym data transformation.
+2025-08-15 14:30:13,464 - INFO - Running in test mode. Processing only the first gym.
+2025-08-15 14:30:13,464 - INFO - Processing gym 1/1
+2025-08-15 14:31:04,242 - INFO - Transformation complete. Output written to data/ui-data.ts
+2025-08-15 14:32:50,832 - INFO - Starting gym data transformation.
+2025-08-15 14:32:50,833 - INFO - Processing gym 1/40
+2025-08-15 14:33:45,086 - INFO - Processing gym 2/40
+2025-08-15 14:34:30,085 - INFO - Processing gym 3/40
+2025-08-15 14:36:11,303 - INFO - Processing gym 4/40
+2025-08-15 14:37:42,322 - INFO - Processing gym 5/40
+2025-08-15 14:38:41,498 - INFO - Processing gym 6/40
+2025-08-15 14:40:20,385 - INFO - Processing gym 7/40
+2025-08-15 14:41:23,178 - INFO - Processing gym 8/40
+2025-08-15 14:42:14,874 - INFO - Processing gym 9/40
