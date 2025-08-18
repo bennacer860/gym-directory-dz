@@ -5,6 +5,7 @@ import sys
 import requests
 import subprocess
 import re
+import time
 
 def setup_logging(log_file):
     """Set up logging to both file and console."""
@@ -25,7 +26,7 @@ def call_ollama_api(prompt, ollama_url, is_json_response=False):
             "-s",
             ollama_url,
             "-d",
-            json.dumps({"model": "wizardlm2:7b", "prompt": prompt, "stream": False}, ensure_ascii=False),
+            json.dumps({"model": "gpt-oss", "prompt": prompt, "stream": False}, ensure_ascii=False),
         ]
         result = subprocess.run(
             curl_command, capture_output=True, text=True, check=True, encoding="utf-8"
@@ -42,12 +43,25 @@ def call_ollama_api(prompt, ollama_url, is_json_response=False):
                     return json.loads(json_str)
                 else:
                     # Fallback for plain JSON
-                    return json.loads(response_text)
+                    # Find the first '{' or '['
+                    start = -1
+                    for i, char in enumerate(response_text):
+                        if char == '{' or char == '[':
+                            start = i
+                            break
+                    if start != -1:
+                        try:
+                            return json.loads(response_text[start:])
+                        except json.JSONDecodeError:
+                            return None
+                    return None
             except json.JSONDecodeError as e:
                 logging.error(f"Error decoding JSON from Ollama response: {e}")
                 logging.error(f"Raw response: {response_text}")
                 return None
         else:
+            # Remove <think> tags
+            response_text = re.sub(r'<think>.*?</think>', '', response_text, flags=re.DOTALL)
             return response_text.strip()
 
     except subprocess.CalledProcessError as e:
@@ -71,9 +85,24 @@ def process_batch(batch, ollama_url):
 
     # Prompt for amenities
     amenities_prompt = f"""
+    # objectif
     (REMAIN UTF-8 encoded)
-    Extrayez une liste d'équipements à partir des avis suivants. Retournez UNIQUEMENT UN SEUL tableau JSON de chaînes de caractères. 
-    NE Retourne pas de description, seulement la structure JSON example: ```json
+    Extrayez une liste d'équipements à partir des avis suivants. 
+    
+    ## description de output
+    Chaque chaîne de caractères doit être un équipement de quelques mots qui peut être utilisé comme filtre (par exemple: Sauna, Wi-Fi gratuit, Parking,
+    Bar, Nutrition Conseil, Cours Collectifs, Cours de Yoga, Crossfit, Entraînement Fonctionnel, Entraînement Personnel, Entraînement Virtuel, Garderie,
+    Hammam, Musculation, Parking, Pilates, Piscine, Poids Lourds, Powerlifting, Sauna, Services Spa, Thérapie de Massage, Vestiaires, Zone de Récupération,
+    Équipements Cardio, Équipements High-Tech, Équipements Modernes, Équipements de Base). Si possible, favoriser ces mot au lieux de long phrase quand 
+    il ya des similarite dans le sense.
+
+    ## contraint
+    EVITEZ dans la list
+    - Des tags qui ne contiennent pas du francais ou des mot qui n'ont aucun rapport avec le sujet du sport.
+    - Des tags qui ont de nom de personne9
+    - Des tags qui ont des critique our jugement, example (Climatisation Glaciale dans les Vestiaires Femme, Piscine avec Température Équilibrée,Propriété Stricte) 
+    GARDEZ la list moins de 10 elements les plu proche de le (description de output)
+    RETOURNEZ UNIQUEMENT UN SEUL tableau JSON de chaînes de caractères. NE Retourne pas de description, seulement la structure JSON. example de reponse: ```json
      [
       "Spa",
        "Massage Thalassothérapie",
@@ -89,15 +118,6 @@ def process_batch(batch, ollama_url):
      ]
     ```
     
-    Chaque chaîne de caractères doit être un équipement de quelques mots qui peut être utilisé comme filtre (par exemple, Sauna, Wi-Fi gratuit, Parking,
-    Bar, Nutrition Conseil, Cours Collectifs, Cours de Yoga, Crossfit, Entraînement Fonctionnel, Entraînement Personnel, Entraînement Virtuel, Garderie,
-    Hammam, Musculation, Parking, Pilates, Piscine, Poids Lourds, Powerlifting, Sauna, Services Spa, Thérapie de Massage, Vestiaires, Zone de Récupération,
-    Équipements Cardio, Équipements High-Tech, Équipements Modernes, Équipements de Base). 
-    EVITEZ de dans la list
-    - Des tags qui ne contiennent pas du francais ou des mot qui n'ont aucun rapport avec le sujet du sport.
-    - Des tags qui ont de nom de personne
-    - Des tags qui ont des critique
-    GARDEZ la list moins de 10 elements 
     Avis:
 {all_reviews}
     """
@@ -117,28 +137,47 @@ def process_batch(batch, ollama_url):
         # Prompt for description
         description_prompt = f"""
 (REMAIN UTF-8 encoded)
+## objectif
 Rédigez une brève description en un seul paragraphe pour la salle de sport en vous basant sur les avis suivants.
+examples
+- Five Gym Club est une salle située à Alger Centre, bien située, lumineuse et propre. Elle est très bien équipée et propose des heures d'entraînement spéciales pour les femmes ainsi que pour les hommes.
+- Centre All For One situé à Zeralda, est un vaste centre de remise en forme doté de deux salles séparées pour femmes et pour hommes. Il dispose de matériel de haute qualité et propose des cours collectifs pour femmes, incluant le pilates, la zumba, et d'autres activités similaires.
+- Power Fitness Constantine est une salle spacieuse, propre et bien équipée, idéale pour tous types d'entraînements. Avec un bon matériel à disposition, elle offre un cadre parfait pour atteindre vos objectifs de fitness dans une ambiance agréable.
+
+
+## contraints
+- EVITEZ les jugements subjectifs, exemple (Climatisation Glaciale dans les Vestiaires Femme, Piscine avec Température Équilibrée,Propriété Stricte)
+- GARDER la description courte et positive, pas plus de 3-4 phrase.
+- NE PAS MENTIONNER les prix ou donner un jugement sur les prix.
+
+# etapes
+- rediger une description
+- appliqueur les contraintes et changer la description si il le faut
+
 Avis:
 {gym_reviews}
+
+IMPORTANT: Votre réponse ne doit contenir que le texte de la description, et rien d'autre. N'incluez aucun autre texte, balise ou formatage.
+IMPORTANT: Restez neutre dans la description et n'utilisez aucun jugement des avis comme (Les douches ne fonctionnent pas à cause de l'odeur, du warm-out )
 """
         description = call_ollama_api(description_prompt, ollama_url)
         gym["description"] = description if description else "No description available."
         gym["amenities"] = amenities
 
 def determine_women_only_with_ollama(gym, ollama_url):
-    """Determine if a gym is women-only using Ollama."""
+    """Determine if a gym is has women space using Ollama."""
     name = gym.get("displayName", {}).get("text", "")
     description = gym.get("description", "")
-    reviews = " ".join([review.get("text", "") for review in gym.get("reviews", [])])
+    reviews = " ".join([r.get('text') or '' for r in gym.get("reviews", []) if r])
     
     prompt = f"""
-    Based on the following information, is this gym exclusively for women?
-    Name: {name}
+    En vous basant sur les informations suivantes, déterminez si cette salle de sport dispose d'un espace réservé aux femmes ou d'horaires spéciaux pour les femmes. Vous trouverez des descriptions telles que \"femme, horaire femme, fille\".
+    Nom: {name}
     Description: {description}
-    Reviews: {reviews}
+    Avis: {reviews}
 
-    Respond with ONLY a JSON object in the format: {{"women_only": boolean}}.
-    Example: ```json
+    Répondez avec UNIQUEMENT un objet JSON au format : {{"women_only": boolean}}.
+    Exemple : ```json
     {{"women_only": true}}
     ```
     """
@@ -148,7 +187,7 @@ def determine_women_only_with_ollama(gym, ollama_url):
     if response and isinstance(response, dict) and "women_only" in response:
         return response.get("women_only", False)
     
-    logging.warning("Could not determine women-only status from Ollama, defaulting to False.")
+    logging.warning("Could not determine women-only status from Ollama, defaulting to False. Response: " + str(response))
     return False
 
 def extract_city(address):
@@ -191,6 +230,7 @@ def main():
     parser.add_argument("--output-file", default="data/ui-data.ts", help="Path to the output TS file.")
     parser.add_argument("--log-file", default="logs/transformer.log", help="Path to the log file.")
     parser.add_argument("--test-mode", action="store_true", help="Process only the first gym entry.")
+    parser.add_argument("--limit", type=int, default=0, help="Limit the number of gyms to process.")
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size for Ollama calls.")
     parser.add_argument("--ollama-url", default="http://localhost:11434/api/generate", help="URL for the local Ollama API.")
     args = parser.parse_args()
@@ -213,8 +253,13 @@ def main():
         gyms = gyms[:1]
         logging.info("Running in test mode. Processing only the first gym.")
 
+    if args.limit > 0:
+        gyms = gyms[:args.limit]
+        logging.info(f"Processing up to {args.limit} gyms.")
+
     transformed_gyms = []
     for i, gym in enumerate(gyms):
+        start_time = time.time()
         logging.info(f"Processing gym {i+1}/{len(gyms)}")
         
         process_batch([gym], args.ollama_url)
@@ -237,6 +282,9 @@ def main():
             "image": get_placeholder_image(i),
             "womenOnlyFacility": women_only
         })
+        end_time = time.time()
+        duration = end_time - start_time
+        logging.info(f"Gym {i+1}/{len(gyms)} processed in {duration:.2f} seconds.")
 
     with open(args.output_file, 'w', encoding='utf-8') as f:
         f.write("export default ")
