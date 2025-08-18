@@ -1,3 +1,8 @@
+"""
+This descript is depracted in favor of 2 scripts: 
+- discover 
+- details
+"""
 
 import os
 import json

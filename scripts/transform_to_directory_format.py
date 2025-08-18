@@ -229,6 +229,7 @@ def main():
     parser.add_argument("--input-file", default="data/gyms_dz.jsonl", help="Path to the input JSONL file.")
     parser.add_argument("--output-file", default="data/ui-data.ts", help="Path to the output TS file.")
     parser.add_argument("--log-file", default="logs/transformer.log", help="Path to the log file.")
+    parser.add_argument("--force-reprocess", action="store_true", help="Force reprocessing of all gyms.")
     parser.add_argument("--test-mode", action="store_true", help="Process only the first gym entry.")
     parser.add_argument("--limit", type=int, default=0, help="Limit the number of gyms to process.")
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size for Ollama calls.")
@@ -238,6 +239,26 @@ def main():
     setup_logging(args.log_file)
 
     logging.info("Starting gym data transformation.")
+
+    # Load existing data from output file to determine processed gyms
+    transformed_gyms = []
+    processed_gym_ids = set()
+    if not args.force_reprocess:
+        try:
+            with open(args.output_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+                # Extract JSON part from the TS file
+                json_str = content.replace("export default ", "").rstrip(";")
+                if json_str:
+                    transformed_gyms = json.loads(json_str)
+                    processed_gym_ids = {gym['id'] for gym in transformed_gyms}
+            logging.info(f"Loaded {len(processed_gym_ids)} processed gym IDs from the output file.")
+        except FileNotFoundError:
+            logging.info("Output file not found. Starting fresh.")
+        except (json.JSONDecodeError, KeyError) as e:
+            logging.error(f"Could not parse existing output file: {e}. Starting fresh.")
+            transformed_gyms = []
+            processed_gym_ids = set()
 
     try:
         with open(args.input_file, 'r', encoding='utf-8') as f:
@@ -257,17 +278,21 @@ def main():
         gyms = gyms[:args.limit]
         logging.info(f"Processing up to {args.limit} gyms.")
 
-    transformed_gyms = []
     for i, gym in enumerate(gyms):
+        gym_id = gym.get("id")
+        if gym_id in processed_gym_ids:
+            logging.info(f"Skipping already processed gym {gym_id}")
+            continue
+
         start_time = time.time()
-        logging.info(f"Processing gym {i+1}/{len(gyms)}")
+        logging.info(f"Processing gym {i+1}/{len(gyms)} ({gym_id})")
         
         process_batch([gym], args.ollama_url)
         
         women_only = determine_women_only_with_ollama(gym, args.ollama_url)
 
-        transformed_gyms.append({
-            "id": gym.get("id"),
+        transformed_gym = {
+            "id": gym_id,
             "name": gym.get("displayName", {}).get("text"),
             "city": extract_city(gym.get("formattedAddress")),
             "address": gym.get("formattedAddress"),
@@ -279,19 +304,24 @@ def main():
             "hours": format_hours(gym.get("regularOpeningHours", {}).get("weekdayDescriptions")),
             "priceRange": "Non communiqué",
             "rating": gym.get("rating"),
-            "image": get_placeholder_image(i),
+            "image": get_placeholder_image(len(transformed_gyms)), # Use length of transformed_gyms for image index
             "womenOnlyFacility": women_only
-        })
+        }
+        transformed_gyms.append(transformed_gym)
+        processed_gym_ids.add(gym_id)
+
+        # Write to output file after each gym
+        with open(args.output_file, 'w', encoding='utf-8') as f:
+            f.write("export default ")
+            json.dump(transformed_gyms, f, indent=2, ensure_ascii=False)
+            f.write(";")
+
         end_time = time.time()
         duration = end_time - start_time
-        logging.info(f"Gym {i+1}/{len(gyms)} processed in {duration:.2f} seconds.")
-
-    with open(args.output_file, 'w', encoding='utf-8') as f:
-        f.write("export default ")
-        json.dump(transformed_gyms, f, indent=2, ensure_ascii=False)
-        f.write(";")
+        logging.info(f"Gym {i+1}/{len(gyms)} ({gym_id}) processed in {duration:.2f} seconds.")
 
     logging.info(f"Transformation complete. Output written to {args.output_file}")
+
 
 if __name__ == "__main__":
     main()
