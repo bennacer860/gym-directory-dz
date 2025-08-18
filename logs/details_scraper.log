@@ -175,3 +175,24 @@ Processing 40 unique place IDs for details.
 2025-08-14 16:28:09,530 - INFO -   New details fetched: 0
 2025-08-14 16:28:09,531 - INFO - 
 Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl
+2025-08-18 19:21:54,874 - INFO - --- RUNNING IN TEST MODE (Details) ---
+2025-08-18 19:21:54,874 - INFO - 
+Processing 5 unique place IDs for details.
+
+2025-08-18 19:21:54,874 - INFO - CACHE MISS (1/5): Fetching new data for ChIJadHET_axjxIRGOJLuLvtGFI
+2025-08-18 19:21:55,137 - INFO - SUCCESS (1/5): Fetched and cached data for ChIJadHET_axjxIRGOJLuLvtGFI (HM spa et sport, Alger)
+2025-08-18 19:21:55,243 - INFO - CACHE MISS (2/5): Fetching new data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ
+2025-08-18 19:21:55,496 - INFO - SUCCESS (2/5): Fetched and cached data for ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ (BRfoot, Alger)
+2025-08-18 19:21:55,602 - INFO - CACHE MISS (3/5): Fetching new data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs
+2025-08-18 19:21:55,793 - INFO - SUCCESS (3/5): Fetched and cached data for ChIJ87lQL0RRjhIRoK3Z_Aimaqs (California Gym, Alger)
+2025-08-18 19:21:55,898 - INFO - CACHE MISS (4/5): Fetching new data for ChIJd-zKUF6xjxIROOk5ORe8yw4
+2025-08-18 19:21:56,124 - INFO - SUCCESS (4/5): Fetched and cached data for ChIJd-zKUF6xjxIROOk5ORe8yw4 (FLEXON Club99, Alger)
+2025-08-18 19:21:56,231 - INFO - CACHE MISS (5/5): Fetching new data for ChIJvStaVbmtjxIRdUVxesIlutU
+2025-08-18 19:21:56,457 - INFO - SUCCESS (5/5): Fetched and cached data for ChIJvStaVbmtjxIRdUVxesIlutU (Citi'Zen Gym Club, Alger)
+2025-08-18 19:21:56,560 - INFO - 
+--- Exporting Data ---
+2025-08-18 19:21:56,560 - INFO -   Total unique place IDs processed: 5
+2025-08-18 19:21:56,560 - INFO -   Cache hits: 0
+2025-08-18 19:21:56,560 - INFO -   New details fetched: 5
+2025-08-18 19:21:56,561 - INFO - 
+Successfully exported data to data/gyms_dz.csv and data/gyms_dz.jsonl

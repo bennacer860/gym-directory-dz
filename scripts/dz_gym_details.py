@@ -132,7 +132,7 @@ def get_details(place_id):
     headers = {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": API_KEY,
-        "X-Goog-FieldMask": "id,displayName,formattedAddress,location,internationalPhoneNumber,websiteUri,regularOpeningHours,rating,userRatingCount,reviews",
+        "X-Goog-FieldMask": "id,displayName,formattedAddress,location,internationalPhoneNumber,websiteUri,regularOpeningHours,rating,userRatingCount,reviews,photos",
     }
     params = {
         "languageCode": LANGUAGE,
@@ -221,10 +221,12 @@ def normalize_place(p):
         })
     p["reviews"] = normalized_reviews
 
-    # Remove photo_reference and map_url generation as they are not part of this script's scope
-    p.pop("photo_reference", None)
-    p.pop("map_url", None)
-    p.pop("photos", None) # Ensure photos field is removed if present
+    # Extract photo reference
+    if p.get("photos") and isinstance(p["photos"], list) and len(p["photos"]) > 0:
+        p["photo_reference"] = p["photos"][0].get("name")
+
+    # Remove photos field as it's large and not needed after extracting the reference
+    p.pop("photos", None)
 
     return p
 
