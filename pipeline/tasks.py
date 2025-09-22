@@ -2,7 +2,7 @@
 
 import logging
 import re
-from celery import group
+from celery import group, chord
 from celery_app import app
 from pipeline.models import get_db_connection
 import config
@@ -16,6 +16,41 @@ import sqlite3 # Import sqlite3 for Row factory
 import traceback # Import traceback for detailed error reporting
 
 logger = logging.getLogger(__name__)
+# --- LLM Cache Helpers ---
+def build_llm_cache_key(place_id, task_name, prompt_text):
+    import hashlib
+    key_material = f"{place_id}|{task_name}|{config.LLM_PROMPT_VERSION}|{config.OLLAMA_MODEL}|{prompt_text}"
+    return hashlib.sha256(key_material.encode("utf-8")).hexdigest()
+
+def read_llm_cache(conn, cache_key):
+    row = conn.execute("SELECT response_json, created_at FROM llm_cache WHERE cache_key = ?", (cache_key,)).fetchone()
+    if not row: return None
+    try:
+        created_at = datetime.fromisoformat(row["created_at"]).replace(tzinfo=timezone.utc)
+    except Exception:
+        created_at = datetime.now(timezone.utc) - timedelta(days=9999)
+    if datetime.now(timezone.utc) - created_at > timedelta(days=config.LLM_CACHE_DAYS):
+        return None
+    try:
+        return json.loads(row["response_json"]) if row["response_json"] else None
+    except json.JSONDecodeError:
+        return None
+
+def write_llm_cache(conn, cache_key, place_id, task_name, prompt_text, response_obj):
+    conn.execute(
+        """
+        INSERT OR REPLACE INTO llm_cache (cache_key, place_id, task_name, prompt_hash, response_json, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        (
+            cache_key,
+            place_id,
+            task_name,
+            cache_key,
+            json.dumps(response_obj, ensure_ascii=False),
+            datetime.now(timezone.utc).isoformat(),
+        ),
+    )
 
 # --- Helper Functions ---
 
@@ -41,11 +76,12 @@ def update_place_status(place_id, status):
 
 def make_api_request(url, method='GET', headers=None, json_payload=None):
     try:
+        timeout = config.REQUEST_TIMEOUT
         if method.upper() == 'POST':
-            response = requests.post(url, headers=headers, json=json_payload)
+            response = requests.post(url, headers=headers, json=json_payload, timeout=timeout)
         else:
-            response = requests.get(url, headers=headers)
-        response.raise_status()
+            response = requests.get(url, headers=headers, timeout=timeout)
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         logger.error(f"API request failed: {e}")
@@ -53,9 +89,9 @@ def make_api_request(url, method='GET', headers=None, json_payload=None):
 
 def call_ollama_api(prompt, is_json_response=False):
     try:
-        payload = {"model": "gpt-oss", "prompt": prompt, "stream": False}
-        response = requests.post(config.OLLAMA_API_URL, json=payload)
-        response.raise_status()
+        payload = {"model": config.OLLAMA_MODEL, "prompt": prompt, "stream": False}
+        response = requests.post(config.OLLAMA_API_URL, json=payload, timeout=config.OLLAMA_TIMEOUT)
+        response.raise_for_status()
         response_json = response.json()
         response_text = response_json.get("response", "")
         if is_json_response:
@@ -255,12 +291,18 @@ def enrich_data(place_id, skip_llm=False):
         
         if not skip_llm: # Conditionally dispatch LLM tasks
             logger.info(f"Successfully saved base record for {place_id}. Triggering parallel LLM enrichment tasks.")
-            llm_tasks = group(get_llm_description.s(place_id), get_llm_amenities.s(place_id), get_llm_misc_details.s(place_id))
-            llm_tasks.apply_async()
+            llm_group = group(
+                get_llm_description.s(place_id),
+                get_llm_amenities.s(place_id),
+                get_llm_misc_details.s(place_id),
+            )
+            finalize = llm_finalize.s(place_id)
+            chord(llm_group)(finalize)
         else:
             logger.info(f"[{place_id}] Skipping LLM enrichment as --skip-llm flag is set.")
 
-        update_place_status(place_id, 'COMPLETED')
+        if skip_llm:
+            update_place_status(place_id, 'COMPLETED')
         return "Base record saved. Dispatched LLM tasks." if not skip_llm else "Base record saved. LLM tasks skipped."
     except Exception as e:
         update_place_status(place_id, 'FAILED_ENRICH')
@@ -271,12 +313,12 @@ def enrich_data(place_id, skip_llm=False):
 
 # --- LLM Enrichment Tasks ---
 
-@app.task(bind=True, max_retries=3, default_retry_delay=60)
+@app.task(bind=True, max_retries=3, default_retry_delay=60, queue="llm")
 def get_llm_description(self, place_id):
     logger.info(f"[{place_id}] Starting LLM task: get_description (Attempt {self.request.retries + 1})")
     conn = get_db_connection()
     try:
-        reviews = conn.execute("SELECT text FROM reviews WHERE place_id = ? AND text IS NOT NULL", (place_id,)).fetchall()
+        reviews = conn.execute("SELECT text FROM reviews WHERE place_id = ? AND text IS NOT NULL LIMIT ?", (place_id, config.MAX_REVIEWS_PER_PLACE)).fetchall()
         if not reviews:
             return {"status": "skipped", "reason": "No reviews found."}
         reviews_text = "\n".join([row['text'] for row in reviews])
@@ -306,11 +348,17 @@ Avis:
 IMPORTANT: Votre réponse ne doit contenir que le texte de la description, et rien d'autre. N'incluez aucun autre texte, balise ou formatage.
 IMPORTANT: Restez neutre dans la description et n'utilisez aucun jugement des avis comme (Les douches ne fonctionnent pas à cause de l'odeur, du warm-out )
 '''
-        description = call_ollama_api(prompt)
+        cache_key = build_llm_cache_key(place_id, "get_llm_description", reviews_text)
+        cached = read_llm_cache(conn, cache_key)
+        if cached and isinstance(cached, dict) and cached.get("description_text"):
+            description = cached["description_text"]
+        else:
+            description = call_ollama_api(prompt)
 
         if description:
             with conn:
                 conn.execute("UPDATE gyms SET description = ? WHERE place_id = ?", (description, place_id))
+                write_llm_cache(conn, cache_key, place_id, "get_llm_description", reviews_text, {"description_text": description})
             logger.info(f"[{place_id}] Successfully updated description.")
             return {"status": "success", "description": description}
         else:
@@ -321,12 +369,12 @@ IMPORTANT: Restez neutre dans la description et n'utilisez aucun jugement des av
     finally:
         conn.close()
 
-@app.task(bind=True, max_retries=3, default_retry_delay=60)
+@app.task(bind=True, max_retries=3, default_retry_delay=60, queue="llm")
 def get_llm_amenities(self, place_id):
     logger.info(f"[{place_id}] Starting LLM task: get_amenities (Attempt {self.request.retries + 1})")
     conn = get_db_connection()
     try:
-        reviews = conn.execute("SELECT text FROM reviews WHERE place_id = ? AND text IS NOT NULL", (place_id,)).fetchall()
+        reviews = conn.execute("SELECT text FROM reviews WHERE place_id = ? AND text IS NOT NULL LIMIT ?", (place_id, config.MAX_REVIEWS_PER_PLACE)).fetchall()
         if not reviews:
             return {"status": "skipped", "reason": "No reviews found."}
         reviews_text = "\n".join([row['text'] for row in reviews])
@@ -368,11 +416,17 @@ def get_llm_amenities(self, place_id):
     Avis:
 {reviews_text}
     '''
-        amenities = call_ollama_api(prompt, is_json_response=True)
+        cache_key = build_llm_cache_key(place_id, "get_llm_amenities", reviews_text)
+        cached = read_llm_cache(conn, cache_key)
+        if cached and isinstance(cached, list):
+            amenities = cached
+        else:
+            amenities = call_ollama_api(prompt, is_json_response=True)
 
         if amenities:
             with conn:
                 conn.execute("UPDATE gyms SET amenities = ? WHERE place_id = ?", (json.dumps(amenities), place_id))
+                write_llm_cache(conn, cache_key, place_id, "get_llm_amenities", reviews_text, amenities)
             logger.info(f"[{place_id}] Successfully updated amenities.")
             return {"status": "success", "amenities": amenities}
         else:
@@ -383,13 +437,13 @@ def get_llm_amenities(self, place_id):
     finally:
         conn.close()
 
-@app.task(bind=True, max_retries=3, default_retry_delay=60)
+@app.task(bind=True, max_retries=3, default_retry_delay=60, queue="llm")
 def get_llm_misc_details(self, place_id):
     logger.info(f"[{place_id}] Starting LLM task: get_misc_details (Attempt {self.request.retries + 1})")
     conn = get_db_connection()
     try:
         gym_info = conn.execute("SELECT name, hours, description FROM gyms WHERE place_id = ?", (place_id,)).fetchone()
-        reviews = conn.execute("SELECT text FROM reviews WHERE place_id = ? AND text IS NOT NULL", (place_id,)).fetchall()
+        reviews = conn.execute("SELECT text FROM reviews WHERE place_id = ? AND text IS NOT NULL LIMIT ?", (place_id, config.MAX_REVIEWS_PER_PLACE)).fetchall()
         
         gym_name = gym_info['name'] if gym_info else ''
         gym_hours = gym_info['hours'] if gym_info else ''
@@ -407,18 +461,40 @@ def get_llm_misc_details(self, place_id):
     {{\"women_only\": true}}
     ```
     """
-        women_only_response = call_ollama_api(women_only_prompt, is_json_response=True)
+        women_cache_key = build_llm_cache_key(place_id, "get_llm_misc_details_women", f"{gym_name}|{description}|{reviews_text}")
+        cached_women = read_llm_cache(conn, women_cache_key)
+        if cached_women and isinstance(cached_women, dict):
+            women_only_response = cached_women
+        else:
+            women_only_response = call_ollama_api(women_only_prompt, is_json_response=True)
         has_women_hours = women_only_response.get('women_only', False) if isinstance(women_only_response, dict) else False
         logger.info(f"[{place_id}] Got women-only status: {has_women_hours}")
 
         hours_prompt = f"Traduire ou résumer les horaires suivants en une seule phrase en français: {gym_hours}"
-        hours_french = call_ollama_api(hours_prompt)
+        hours_cache_key = build_llm_cache_key(place_id, "get_llm_misc_details_hours", str(gym_hours))
+        cached_hours = read_llm_cache(conn, hours_cache_key)
+        if cached_hours and isinstance(cached_hours, dict) and cached_hours.get("hours_french"):
+            hours_french = cached_hours["hours_french"]
+        else:
+            hours_french = call_ollama_api(hours_prompt)
         logger.info(f"[{place_id}] Got French hours: {hours_french}")
 
         with conn:
             conn.execute("UPDATE gyms SET has_women_hours = ?, hours_french = ? WHERE place_id = ?", (has_women_hours, hours_french, place_id))
+            write_llm_cache(conn, women_cache_key, place_id, "get_llm_misc_details_women", f"{gym_name}|{description}|{reviews_text}", women_only_response)
+            write_llm_cache(conn, hours_cache_key, place_id, "get_llm_misc_details_hours", str(gym_hours), {"hours_french": hours_french})
         logger.info(f"[{place_id}] Successfully updated misc details.")
         return {"status": "success", "has_women_hours": has_women_hours, "hours_french": hours_french}
+@app.task
+def llm_finalize(results, place_id):
+    try:
+        # Results from chord body; ensure completion status
+        update_place_status(place_id, 'COMPLETED')
+        logger.info(f"[{place_id}] LLM chord finalized with results: {results}")
+        return {"status": "finalized", "results": results}
+    except Exception:
+        logger.exception(f"[{place_id}] Failed to finalize LLM chord")
+        raise
     except Exception as e:
         logger.exception(f"[{place_id}] Failed LLM task: get_misc_details (Attempt {self.request.retries + 1} of {self.max_retries}): {e}")
         raise self.retry(exc=e) # Re-raise the exception for retry
