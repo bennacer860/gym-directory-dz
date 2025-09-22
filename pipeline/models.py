@@ -82,5 +82,18 @@ def setup_database():
         )
     ''')
 
+    # --- LLM Cache Table ---
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS llm_cache (
+            cache_key TEXT PRIMARY KEY,
+            place_id TEXT,
+            task_name TEXT,
+            prompt_hash TEXT,
+            response_json TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (place_id) REFERENCES places(place_id)
+        )
+    ''')
+
     conn.commit()
     conn.close()

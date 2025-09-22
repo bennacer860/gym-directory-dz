@@ -20,4 +20,9 @@ app.conf.update(
     result_serializer="json",
     timezone="UTC",
     enable_utc=True,
+    task_routes={
+        "pipeline.tasks.get_llm_description": {"queue": "llm"},
+        "pipeline.tasks.get_llm_amenities": {"queue": "llm"},
+        "pipeline.tasks.get_llm_misc_details": {"queue": "llm"},
+    },
 )

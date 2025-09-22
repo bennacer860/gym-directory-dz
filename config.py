@@ -17,6 +17,8 @@ MAX_REVIEWS_PER_PLACE = 100
 
 # --- Caching ---
 REFRESH_DAYS = 30
+LLM_CACHE_DAYS = int(os.getenv("LLM_CACHE_DAYS", "90"))
+LLM_PROMPT_VERSION = os.getenv("LLM_PROMPT_VERSION", "v1")
 
 # --- Project Paths ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -30,7 +32,12 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
 # --- Ollama ---
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
+OLLAMA_API_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434/api/generate")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gpt-oss")
+OLLAMA_TIMEOUT = int(os.getenv("OLLAMA_TIMEOUT", "120"))
+
+# --- HTTP ---
+REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
 
 # --- Cities ---
 CITIES = [
