@@ -21,8 +21,8 @@ MAX_PAGES = 5
 LANGUAGE = "fr"
 REGION_CODE = "DZ"
 
-# Intermediate JSON artifact path
-DISCOVERED_GYMS_JSON = "/Users/rafikben/coding/affiliate/gym-directory-dz/data/discovered_gyms.json"
+# Intermediate JSON artifact path (project-relative, cross-platform)
+DISCOVERED_GYMS_JSON = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "discovered_gyms.json")
 
 # Algerian cities with approximate central coordinates
 # Coordinates obtained from a quick web search for city centers.
