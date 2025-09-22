@@ -1,2 +1,7 @@
 requests
 python-dateutil
+celery
+redis
+flower
+python-dotenv
+click

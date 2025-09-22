@@ -1,162 +1,138 @@
-# Gym Directory DZ
+# Gym Directory DZ - Data Pipeline
 
-## A) Architecture
+This project implements a robust data pipeline to collect and enrich gym ("salle de sport") information across the 15 largest cities in Algeria using the Google Places API (New, v1) and a local Large Language Model (LLM) via Ollama. The pipeline is built with Celery for task orchestration, Redis as a message broker, and SQLite for data persistence.
+
+## Features
+
+*   **Google Places API (New, v1):** Utilizes Nearby Search and Place Details for data collection.
+*   **Celery Task Queue:** Asynchronous processing for scalability, retries, and error handling.
+*   **Redis Integration:** Used as the message broker and result backend for Celery.
+*   **SQLite Database:** Persistent storage for raw API responses, processed data, and pipeline state.
+*   **LLM Enrichment (Ollama):** Extracts detailed descriptions, amenities, French opening hours, and women-only facility status from reviews using a local LLM.
+*   **Data Caching:** Implements a 30-day cache for Place Details to optimize API usage and costs.
+*   **Comprehensive Logging:** Detailed logs for pipeline progress and errors.
+*   **Flexible Export Formats:** Exports data into CSV, JSONL, and a UI-ready JSON format.
+*   **Flower Monitoring:** Web-based monitoring tool for Celery tasks.
+
+## Architecture
 
 ```ascii
-+--------------+     +-----------------------+     +-----------------+     +----------------------+     +-----------+
-|   City List  | --> |   Nearby Search       | --> |  Deduplication  | --> |  Place Details       | --> |  Exports  |
-| (15 cities)  |     | (<=5 pages per city)  |     | (by place_id)   |     | (with 30-day cache)  |     | (CSV/JSONL) |
-+--------------+     +-----------------------+     +-----------------+     +----------------------+     +-----------+
++-----------------+     +-----------------+     +---------------------+     +---------------------+     +---------------------+     +-----------------+
+|  start_pipeline | --> | discover_places | --> |   process_place     | --> | fetch_place_details | --> |     enrich_data     | --> |  LLM Enrichment |
+| (CLI Trigger)   |     | (per city)      |     | (cache check)       |     | (Google API)        |     | (base processing)   |     | (3 parallel tasks) |
++-----------------+     +-----------------+     +---------------------+     +---------------------+     +---------------------+     +-----------------+
+                                                                                                                            |
+                                                                                                                            +-----------------+
+                                                                                                                            |  export_data    |
+                                                                                                                            | (CSV, JSONL, UI)|
+                                                                                                                            +-----------------+
 ```
 
-## B) Data Model
+## Prerequisites
 
-### SQLite Cache
+Before running the pipeline, ensure you have the following installed and configured:
 
--   **Table:** `place_cache`
-    -   `place_id` (TEXT, PRIMARY KEY)
-    -   `payload_json` (TEXT)
-    -   `fetched_at` (TIMESTAMP)
+*   **Python 3.10+**
+*   **`pip`** (Python package installer)
+*   **`redis-server`**: Running locally or accessible via network.
+*   **Ollama**: Running locally.
+    *   Download and install Ollama from [ollama.com](https://ollama.com/).
+    *   Pull the `gpt-oss` model (or your preferred compatible model): `ollama pull gpt-oss`
+*   **Google Places API Key (New, v1)**: Obtain one from the Google Cloud Console.
 
-### CSV Schema
+## Setup
 
-`place_id,name,address,lat,lng,phone,website,rating,reviews_count,hours`
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-repo/gym-directory-dz.git
+    cd gym-directory-dz
+    ```
 
-### JSONL Schema
-
-Each line is a JSON object representing the full Place Details payload, with an added normalized `reviews` array.
-
-```json
-{
-  "id": "...",
-  "displayName": { ... },
-  "formattedAddress": "...",
-  // ... other fields from Place Details
-  "reviews": [
-    {
-      "author_name": "...",
-      "rating": 5,
-      "relative_time_description": "...",
-      "original_language": "...",
-      "text": "..."
-    }
-  ]
-}
-```
-
-## C) Algorithm
-
-1.  **Initialization:**
-    *   Load configuration from environment variables and constants.
-    *   Create the SQLite database and table if they don't exist.
-2.  **City Iteration:**
-    *   For each city in the predefined list:
-        *   Initialize `nextPageToken` to `None`.
-        *   Start a loop that will run for a maximum of `MAX_PAGES`.
-3.  **Pagination Loop:**
-    *   Perform a Nearby Search request for the current city with the current `nextPageToken`.
-    *   Collect all `place_id`s from the response.
-    *   If a `nextPageToken` is present in the response, store it for the next iteration and sleep for a short duration (e.g., 2 seconds) to avoid hitting rate limits.
-    *   If no `nextPageToken` is returned, or the page limit is reached, break the loop for the current city.
-4.  **Deduplication:**
-    *   After iterating through all cities, create a unique set of all collected `place_id`s.
-5.  **Details Fetching:**
-    *   For each unique `place_id`:
-        *   Check the cache:
-            *   If the `place_id` exists in the cache and the data is not stale (i.e., fetched within `REFRESH_DAYS`), use the cached data.
-            *   Otherwise, fetch the Place Details from the API.
-        *   If fetched from the API, store the new data in the cache with the current timestamp.
-6.  **Data Normalization and Export:**
-    *   For each fetched place (from cache or API):
-        *   Normalize the opening hours and reviews as per the specified schema.
-        *   Append the flattened data to a list for CSV export.
-        *   Append the full JSON payload (with normalized reviews) to a list for JSONL export.
-7.  **File Generation:**
-    *   Write the collected data to CSV and JSONL files.
-8.  **Logging:**
-    *   Log progress, counts (pages, IDs, cache hits), and any errors encountered throughout the process.
-
-## D) Production-grade Python
-
-See `dz_gym_scraper.py`.
-
-## E) Pagination Policy
-
-The script will request up to 5 pages of results for each city. The pagination logic is as follows:
-
-1.  The first request for a city is made without a page token.
-2.  If the response contains a `nextPageToken`, the script will wait for 2 seconds before making the next request using this token.
-3.  This process continues until one of the following conditions is met:
-    *   The script has retrieved 5 pages for the current city.
-    *   The API response does not contain a `nextPageToken`.
-
-## F) Reviews Policy
-
-The script will capture all reviews returned by the Place Details API call. A hard cap of `MAX_REVIEWS_PER_PLACE=100` is implemented to ensure that the script can handle a large number of reviews in the future, even though the current API typically returns a much smaller number (around 5).
-
-## G) Cost & Quotas
-
-*   **Cost Model:**
-    *   **Nearby Search:** The number of searches is approximately `(Number of Pages) * (Number of Cities)`.
-    *   **Place Details:** The number of details requests is equal to the number of unique `place_id`s found.
-*   **Controlling Spend:**
-    *   **Radius:** A smaller radius will result in fewer places found, thus reducing the number of Place Details requests.
-    *   **MAX_PAGES:** Limiting the number of pages per city directly reduces the number of Nearby Search requests.
-    *   **City Subset:** Running the script on a smaller list of cities will reduce both search and details requests.
-    *   **Field Masking:** The script uses field masks to request only the necessary data, which can help reduce costs by avoiding higher-priced data SKUs (e.g., by dropping `reviews`, `internationalPhoneNumber`, or `websiteUri`).
-    *   **Rolling Refresh:** The caching mechanism with a 30-day refresh period ensures that we don't repeatedly fetch data for the same place, significantly reducing costs on subsequent runs. A strategy to refresh only a fraction of the cache daily (e.g., `1/30th`) could further smoothen the costs.
-
-## How to Run
-
-### `scripts/dz_gym_scraper.py`
-
-This script scrapes gym information from Google Places API.
-
-**To run the script:**
-
-1.  Set up a virtual environment:
+2.  **Create and activate a Python virtual environment:**
     ```bash
     python3 -m venv venv
     source venv/bin/activate
     ```
 
-2.  Install dependencies:
+3.  **Install Python dependencies:**
     ```bash
-    pip install requests python-dateutil python-dotenv
+    pip install -r requirements.txt
     ```
 
-3.  Set the API key:
-
-    Create a `.env` file in the root of the project and add the following line:
+4.  **Configure Environment Variables:**
+    Create a `.env` file in the root of the project with your API key and Ollama URL:
     ```
-    GOOGLE_PLACES_API_KEY=YOUR_API_KEY
+    GOOGLE_PLACES_API_KEY=YOUR_GOOGLE_PLACES_API_KEY
+    OLLAMA_API_URL=http://localhost:11434/api/generate
     ```
+    *(Ensure Ollama is running and the `gpt-oss` model is pulled.)*
 
-4.  Run the script:
+## Running the Pipeline
+
+The pipeline consists of several services that need to be running concurrently.
+
+1.  **Start Redis Server:**
+    If you don't have Redis running as a system service, you can start it manually:
     ```bash
-    python3 scripts/dz_gym_scraper.py
+    redis-server
+    or
+    docker run -d --name my-redis -p 6379:6379 redis
     ```
-    You can also run in test mode to only process a small subset of cities:
+    *(Leave this terminal window open.)*
+
+2.  **Initialize the Database:**
+    This creates the necessary SQLite tables. You only need to do this once or if you want to reset your data.
     ```bash
-    python3 scripts/dz_gym_scraper.py --test-mode
+    python run_pipeline.py initdb
     ```
 
-### `scripts/transform_to_directory_format.py`
-
-This script transforms the scraped gym data into a UI-friendly format using a local Ollama instance.
-
-**To run the script:**
-
-1.  Make sure you have a local Ollama instance running.
-2.  Pull the desired model (e.g., `ollama pull wizardlm2:7b`).
-3.  Run the script:
+3.  **Start Celery Worker:**
+    This process will pick up and execute tasks from the Redis queue. You can adjust `--concurrency` based on your system's resources and API rate limits.
     ```bash
-    python3 scripts/transform_to_directory_format.py
+    celery -A celery_app.app worker --loglevel=info --concurrency=4
     ```
-**Optional arguments:**
-*   `--input-file`: Path to the input JSONL file (default: `data/gyms_dz.jsonl`).
-*   `--output-file`: Path to the output JSON file (default: `data/ui-data.json`).
-*   `--log-file`: Path to the log file (default: `logs/transformer.log`).
-*   `--test-mode`: Process only the first gym entry.
-*   `--batch-size`: Batch size for Ollama calls (default: 1).
-*   `--ollama-url`: URL for the local Ollama API (default: `http://localhost:11434/api/generate`).
+    *(Leave this terminal window open.)*
+
+4.  **Start Flower Monitoring (Optional but Recommended):**
+    Flower provides a real-time web interface to monitor your Celery tasks.
+    ```bash
+    celery -A celery_app.app flower
+    ```
+    Access Flower in your web browser at `http://localhost:5555`.
+    *(Leave this terminal window open.)*
+
+5.  **Trigger the Pipeline:**
+    Once Redis, the Celery worker, and optionally Flower are running, you can start the data collection process:
+    ```bash
+    python run_pipeline.py start
+    ```
+    *   **Test Mode:** To run a quick test (processes only the first city and one page of results), use:
+        ```bash
+        python run_pipeline.py start --test
+        ```
+
+## Output Files
+
+After the pipeline completes, the following files will be generated in the `data/` directory:
+
+*   **`gyms_dz.csv`**: A CSV file containing flattened gym data, including LLM-enriched fields.
+*   **`gyms_dz.jsonl`**: A JSONL file where each line is a full JSON object representing the original Google Places API payload, augmented with LLM-enriched data and normalized reviews.
+*   **`ui-data.json`**: A single JSON file formatted specifically for a UI, containing a list of gym objects with transformed fields.
+
+## Cost & Quotas (Google Places API)
+
+*   **Cost Model:**
+    *   **Nearby Search:** Costs are proportional to `(Number of Pages) * (Number of Cities)`.
+    *   **Place Details:** Costs are proportional to the number of unique `place_id`s.
+*   **Controlling Spend:**
+    *   **`config.RADIUS_M`**: Adjust the search radius.
+    *   **`config.MAX_PAGES`**: Limit the number of pages per city.
+    *   **City Subset:** Process a smaller list of cities.
+    *   **Field Masking:** The pipeline uses field masks to request only necessary data, which helps avoid higher-priced data SKUs.
+    *   **Caching (`config.REFRESH_DAYS`):** The 30-day cache significantly reduces costs on subsequent runs by avoiding redundant API calls.
+
+## Compliance
+
+*   **Data Retention:** Non-`place_id` data is treated as cacheable for up to 30 days.
+*   **Attribution:** If Places content is displayed with a map, it must be on a Google map and include proper Google attribution.
+*   **No Scraping:** All data is collected via the official Google Places API.

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ",
+    "name": "BRfoot",
+    "city": "Alger",
+    "address": "Unnamed Road, PWXX+JG3, Chéraga, Algeria",
+    "phone": "+213 555 70 30 39",
+    "email": "",
+    "website": "https://web.facebook.com/BRfoot-782956862083580/?ref=br_rs",
+    "description": null,
+    "amenities": [],
+    "hours": {
+      "weekdays": "Non communiqué",
+      "weekends": "Non communiqué"
+    },
+    "priceRange": "Non communiqué",
+    "rating": 4.0,
+    "image": "https://places.googleapis.com/v1/places/ChIJ8wQ0Br-xjxIRlN7GeE9H8QQ/photos/AciIO2fLktpepuARE6wha_ogLjAP6ISa7JkvL0t9tX0divp-tHY8Dv9lnW6S9wjmru6_z-m4cM1cqxxsVpbGjpwuYI1Q3gBaBK2NNs-DqPzklpGODLtzKJwTl4hnh5FqTFzg3q_hKLyZP_qOdVViH8m-3lWPYHWD4MVw8l9sbehCveuddkSJMysI0yJ-gzjdfCYZtR72NtfofTMWQmhDWntOL6YlrZC-LdfnvQ7yducW-33W-4zknsDuvNkiYleSKX0S7xLRpkoyowHWPH7NjkiOHRlKT8Ex5DMDWq2BUHjeOzNrYqgrImN89wfXPSLEruhMJrjaUFFaq7-K1spvw5Fxm_6MUdMoIAKvxOzICnDSxyHxj9Ha2udrXBkj5OqBKTW_Jt8ev3_hYVC96VtVNTfm8oqsvMF3SCCL1bo_PVVQ19y_3U7X/media?key=AIzaSyB6EE_Ns6JWEPjmb-RyI_IqXmJvZYLJNbM&maxHeightPx=1024",
+    "womenOnlyFacility": false
+  },
+  {
+    "id": "ChIJb7Bv0LazjxIRJ6ecqfEJvqU",
+    "name": "Home Fit",
+    "city": "Alger",
+    "address": "19 Rue de Cirta, Hydra 16000, Algeria",
+    "phone": "+213 562 41 21 70",
+    "email": "",
+    "website": null,
+    "description": null,
+    "amenities": [],
+    "hours": {
+      "weekdays": "Non communiqué",
+      "weekends": "Non communiqué"
+    },
+    "priceRange": "Non communiqué",
+    "rating": 3.8,
+    "image": "https://places.googleapis.com/v1/places/ChIJb7Bv0LazjxIRJ6ecqfEJvqU/photos/AciIO2f7ZpIWC-dF2lOpGtsBEKEd2cgaxxBztt4rvMklBxRjWzTZ0SQ8XLCQt8I7sM76OhmcdSP6i9V1SoBFRrfoWiL3HiiPGxpmob4z8wSfWt9CHSuq4PwYwghvcTBk63kkuDx0aylRw1ATqxYvcI6o-w5lbR09i3Ea31PSemXBsR1sCXbWUJ4IoXo7xnV6TVgjIwVIy74b_Fx-fSv2gIFWB_tEDopKz4ZRfmXt8KbUNBHsBFZHGBqnurIRAi9_N9A14L4nXSgMOhad0TxnTxIY3eJXNOg0ErPjsY7KtaWL8-EVsw/media?key=AIzaSyB6EE_Ns6JWEPjmb-RyI_IqXmJvZYLJNbM&maxHeightPx=1024",
+    "womenOnlyFacility": false
+  },
+  {
+    "id": "ChIJ6a9YkHlSjhIRSDxPElIU_Rs",
+    "name": "Hôtel Hani",
+    "city": "Alger",
+    "address": "Cité Segna Lot N. 317, Bab Ezzouar, Algeria",
+    "phone": "+213 23 80 90 16",
+    "email": "",
+    "website": "http://www.hotel-hani.com/",
+    "description": null,
+    "amenities": [],
+    "hours": {
+      "weekdays": "Non communiqué",
+      "weekends": "Non communiqué"
+    },
+    "priceRange": "Non communiqué",
+    "rating": 3.9,
+    "image": "https://places.googleapis.com/v1/places/ChIJ6a9YkHlSjhIRSDxPElIU_Rs/photos/AciIO2dQ92InhwVq27iyeWbwKBFpFM3QSAM3YwbxWoLMotDx-HODZUrwW4AOLXHWp7uhyjGs7NGsSxiZyR9TbKQbT1r3wzPdRAZK7KWStB91VGRyBUBGgG2jmdjSQEwMBn9nYAZVqW5ERsPDWmxeyKVgBrNZIIPX0il8hEopH8rkOGhXVhzvO1nT0e09azYKyI24Ol-JMLu_uGJb_jUaAuem-2Hk7wirplTkG9USNHrVtMDRX6hzmzn2s5pgxazIy0-KzVBuaoqvx2KYInmox4quQmU6ztvo2dSuvd4s6wdrqsyltg/media?key=AIzaSyB6EE_Ns6JWEPjmb-RyI_IqXmJvZYLJNbM&maxHeightPx=1024",
+    "womenOnlyFacility": false
+  }
+]
