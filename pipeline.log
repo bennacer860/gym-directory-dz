@@ -4346,3 +4346,86 @@ kombu.exceptions.OperationalError: Error 61 connecting to localhost:6379. Connec
 2025-09-21 23:21:07,175 - [INFO] - __main__ - Export tasks dispatched. Check Celery worker logs and Flower UI.
 2025-09-21 23:25:05,835 - [INFO] - __main__ - Dispatching data export tasks...
 2025-09-21 23:25:05,874 - [INFO] - __main__ - Export tasks dispatched. Check Celery worker logs and Flower UI.
+2025-09-28 14:06:20,378 - [INFO] - flower.command - Visit me at http://0.0.0.0:5555
+2025-09-28 14:06:20,382 - [INFO] - flower.command - Broker: redis://localhost:6379/0
+2025-09-28 14:06:20,383 - [INFO] - flower.command - Registered tasks: 
+['celery.accumulate',
+ 'celery.backend_cleanup',
+ 'celery.chain',
+ 'celery.chord',
+ 'celery.chord_unlock',
+ 'celery.chunks',
+ 'celery.group',
+ 'celery.map',
+ 'celery.starmap',
+ 'pipeline.tasks.discover_places',
+ 'pipeline.tasks.enrich_data',
+ 'pipeline.tasks.export_data',
+ 'pipeline.tasks.export_ui_json',
+ 'pipeline.tasks.fetch_place_details',
+ 'pipeline.tasks.get_llm_amenities',
+ 'pipeline.tasks.get_llm_description',
+ 'pipeline.tasks.get_llm_misc_details',
+ 'pipeline.tasks.process_place',
+ 'pipeline.tasks.start_full_pipeline']
+2025-09-28 14:06:20,393 - [INFO] - kombu.mixins - Connected to redis://localhost:6379/0
+2025-09-28 14:06:35,205 - [INFO] - __main__ - Starting pipeline...
+2025-09-28 14:06:35,243 - [INFO] - __main__ - Pipeline task dispatched to Celery.
+2025-09-28 14:10:21,400 - [INFO] - flower.command - Visit me at http://0.0.0.0:5555
+2025-09-28 14:10:21,403 - [INFO] - flower.command - Broker: redis://localhost:6379/0
+2025-09-28 14:10:21,404 - [INFO] - flower.command - Registered tasks: 
+['celery.accumulate',
+ 'celery.backend_cleanup',
+ 'celery.chain',
+ 'celery.chord',
+ 'celery.chord_unlock',
+ 'celery.chunks',
+ 'celery.group',
+ 'celery.map',
+ 'celery.starmap',
+ 'pipeline.tasks.discover_places',
+ 'pipeline.tasks.enrich_data',
+ 'pipeline.tasks.export_data',
+ 'pipeline.tasks.export_ui_json',
+ 'pipeline.tasks.fetch_place_details',
+ 'pipeline.tasks.get_llm_amenities',
+ 'pipeline.tasks.get_llm_description',
+ 'pipeline.tasks.get_llm_misc_details',
+ 'pipeline.tasks.process_place',
+ 'pipeline.tasks.start_full_pipeline']
+2025-09-28 14:10:21,414 - [INFO] - kombu.mixins - Connected to redis://localhost:6379/0
+2025-09-28 14:10:32,498 - [INFO] - __main__ - Starting pipeline...
+2025-09-28 14:10:32,534 - [INFO] - __main__ - Pipeline task dispatched to Celery.
+2025-09-28 14:10:40,150 - [WARNING] - tornado.general - 404 GET /task/511efae5-9d7c-40c1-a6f3-f4a1d022c764 (127.0.0.1): Unknown task '511efae5-9d7c-40c1-a6f3-f4a1d022c764'
+2025-09-28 14:13:24,221 - [INFO] - __main__ - Starting pipeline...
+2025-09-28 14:13:24,258 - [INFO] - __main__ - Pipeline task dispatched to Celery.
+2025-10-03 02:44:54,481 - [WARNING] - celery.events.state - Substantial drift from celery@Mac may mean clocks are out of sync.  Current drift is 898 seconds.  [orig: 2025-10-03 02:44:54.481224 recv: 2025-10-03 02:29:56.824918]
+2025-10-05 14:25:34,190 - [INFO] - __main__ - Starting pipeline...
+2025-10-05 14:25:34,272 - [INFO] - __main__ - Pipeline task dispatched to Celery.
+2025-10-05 14:26:07,137 - [INFO] - flower.command - Visit me at http://0.0.0.0:5555
+2025-10-05 14:26:07,140 - [INFO] - flower.command - Broker: redis://localhost:6379/0
+2025-10-05 14:26:07,141 - [INFO] - flower.command - Registered tasks: 
+['celery.accumulate',
+ 'celery.backend_cleanup',
+ 'celery.chain',
+ 'celery.chord',
+ 'celery.chord_unlock',
+ 'celery.chunks',
+ 'celery.group',
+ 'celery.map',
+ 'celery.starmap',
+ 'pipeline.tasks.discover_places',
+ 'pipeline.tasks.enrich_data',
+ 'pipeline.tasks.export_data',
+ 'pipeline.tasks.export_ui_json',
+ 'pipeline.tasks.fetch_place_details',
+ 'pipeline.tasks.get_llm_amenities',
+ 'pipeline.tasks.get_llm_description',
+ 'pipeline.tasks.get_llm_misc_details',
+ 'pipeline.tasks.process_place',
+ 'pipeline.tasks.start_full_pipeline']
+2025-10-05 14:26:07,153 - [INFO] - kombu.mixins - Connected to redis://localhost:6379/0
+2025-10-05 14:26:21,387 - [INFO] - __main__ - Starting pipeline...
+2025-10-05 14:26:21,425 - [INFO] - __main__ - Pipeline task dispatched to Celery.
+2025-10-05 14:26:40,220 - [INFO] - __main__ - Starting pipeline...
+2025-10-05 14:26:40,269 - [INFO] - __main__ - Pipeline task dispatched to Celery.

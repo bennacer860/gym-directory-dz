@@ -45,7 +45,7 @@ def make_api_request(url, method='GET', headers=None, json_payload=None):
             response = requests.post(url, headers=headers, json=json_payload)
         else:
             response = requests.get(url, headers=headers)
-        response.raise_status()
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         logger.error(f"API request failed: {e}")
