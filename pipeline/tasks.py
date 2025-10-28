@@ -55,7 +55,7 @@ def call_ollama_api(prompt, is_json_response=False):
     try:
         payload = {"model": "gpt-oss", "prompt": prompt, "stream": False}
         response = requests.post(config.OLLAMA_API_URL, json=payload)
-        response.raise_status()
+        response.raise_for_status()
         response_json = response.json()
         response_text = response_json.get("response", "")
         if is_json_response:
@@ -129,7 +129,9 @@ def discover_places(city_name, test_mode=False, skip_llm=False):
             if next_page_token: payload['pageToken'] = next_page_token
             logger.info(f"City: {city_name} - Requesting page {page_count}...")
             data = make_api_request("https://places.googleapis.com/v1/places:searchNearby", method='POST', headers=headers, json_payload=payload)
-            if data and 'places' in data: [place_ids.add(p['id']) for p in data['places']]
+            if data and 'places' in data:
+                for p in data['places']:
+                    place_ids.add(p['id'])
             next_page_token = data.get('nextPageToken')
             if not next_page_token: break
             time.sleep(2)
@@ -177,7 +179,7 @@ def process_place(place_id, skip_llm=False):
         result = cursor.execute("SELECT fetched_at FROM place_details_cache WHERE place_id = ?", (place_id,)).fetchone()
     finally:
         conn.close()
-    if result and datetime.now(timezone.utc) - datetime.fromisoformat(result['fetched_at']) < timedelta(days=config.REFRESH_DAYS):
+    if result and result['fetched_at'] and datetime.now(timezone.utc) - datetime.fromisoformat(result['fetched_at']) < timedelta(days=config.REFRESH_DAYS):
         logger.info(f"Cache hit (fresh) for {place_id}. Enriching from cache.")
         update_place_status(place_id, 'ENRICHMENT_PENDING')
         enrich_data.delay(place_id, skip_llm=skip_llm)
